@@ -1,0 +1,300 @@
+/* Barra de navegación */
+
+* {
+    font-family: 'Work Sans', sans-serif;
+}
+
+body {
+    margin: 0px;
+    background-color: #D8D7D9;
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-main {
+    height: 100vh;
+    margin: 0px;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("../images/fondo-header.jpg");
+    background-attachment: fixed;
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.nav-bar {
+    background-color: #4B4A4C;
+    height: 100px;
+    min-height: 80px;
+    width: 100vw;
+    margin: 0px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 50px;
+}
+
+nav img {
+    height: 40px;
+}
+
+.nav-options {
+    list-style: none;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 0px;
+}
+
+.nav-options li {
+    font-size: 17px;
+    width: 120px;
+    text-align: center;
+}
+
+.nav-options li a {
+    color: #BEBDBF;
+    transition: 0.3s;
+}
+
+.nav-options li a:hover {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.nav-login {
+    list-style: none;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    padding: 0px;
+}
+
+.nav-login li {
+    font-size: 17px;
+    width: 120px;
+    text-align: center;
+}
+
+.nav-login li a {
+    color: #BEBDBF;
+    transition: 0.3s;
+}
+
+.nav-login li a:hover {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.nav-title {
+    height: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 60px;
+}
+
+.cart-count {
+    -webkit-border-radius: 9px;
+    -moz-border-radius: 9px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 9px;
+    background-color: #FCD350;
+    font-size: 15px;
+    color: black;
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+}
+
+
+/* Cuerpo */
+
+.body-content {
+    padding-top: 20px;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.body-info {
+    background-color: white;
+}
+
+.carousel {
+    height: 525px;
+    width: 60%;
+    min-width: 500px;
+    background-color: red;
+}
+
+.carousel-inner img {
+    height: 525px;
+}
+
+.grid-col-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 2fr);
+    grid-gap: 40px;
+}
+
+.alig-vertical {
+    align-items: center;
+}
+
+.style-text {
+    font-size: 20px;
+}
+
+.card-product-1 img {
+    height: 350px;
+    transition: .2s ease-in-out;
+}
+
+.card-product-1 img:hover {
+    transform: scale(1.1);
+}
+
+.card-product {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-product .card-title {
+    font-size: 30px;
+}
+
+.card-product .card-text {
+    font-size: 20px;
+}
+
+.contactanos {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url("../images/contacto.jpg");
+    background-attachment: fixed;
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: white;
+}
+
+.ubicacion {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.map {
+    width: 100%;
+    height: 400px;
+}
+
+.shop-price {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.shop-name {
+    text-decoration: none;
+    color: black;
+}
+
+.shop-name:hover {
+    text-decoration: none;
+    color: black;
+}
+
+.product-category a {
+    color: black;
+}
+
+.recomendacion {
+    background-color: #CBCBCB;
+    width: 100%;
+    padding: 30px 0px 30px 0px;
+}
+
+.text-red {
+    color: red;
+    cursor: pointer;
+}
+
+.text-red:hover {
+    color: red;
+}
+
+.no-btn {
+    border: none;
+    background-color: transparent;
+    outline: none;
+}
+
+.no-btn:focus {
+    border: none;
+    background-color: transparent;
+    outline: none;
+}
+
+.quantity {
+    border-radius: 15px;
+    text-align: center;
+    width: 70px;
+    outline: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0;
+    /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+    /* Firefox */
+}
+
+
+/* Footer */
+
+footer {
+    width: 100vw;
+    height: fit-content;
+    min-height: 150px;
+    background-color: #4B4A4C;
+}
+
+.redes img {
+    width: 50px;
+}
+
+.redes ul {
+    list-style: none;
+    padding: 0px;
+}
+
+
+/*span*/
+
+.redes .red-img {
+    display: flex;
+    margin: 2px;
+}
+
+.li-img a {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 0px 8px 0px 8px;
+}

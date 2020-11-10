@@ -1,0 +1,29 @@
+body {
+    background-image: url('../images/post1.jpg');
+    background-color: #ffffff;
+}
+
+body.login .login-sidebar {
+    border-top: 5px solid #22A7F0;
+}
+
+@media (max-width: 767px) {
+    body.login .login-sidebar {
+        border-top: 0px !important;
+        border-left: 5px solid #22A7F0;
+    }
+}
+
+body.login .form-group-default.focused {
+    border-color: #22A7F0;
+}
+
+.login-button,
+.bar:before,
+.bar:after {
+    background: #22A7F0;
+}
+
+.remember-me-text {
+    padding: 0 5px;
+}
