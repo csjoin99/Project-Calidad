@@ -243,6 +243,55 @@ class ArticuloController extends Controller
 
         return view('shop.productsmujer')->with(['Titulo' => 'Artículos mujeres', 'products' => $products, 'genderTitulo' => 'Todos']);
     }
+    public function showProducts($genero)
+    {
+        if ($genero == 'mujeres') {
+            $generoArticulo = 2;
+        } else {
+            if ($genero == 'hombres') {
+                $generoArticulo = 1;
+            } else {
+                return redirect()->route('main');
+            }
+        }
+        $products = DB::select("select * from (SELECT *,(select COUNT(*) from articulo_tallas where 
+            articulo_tallas.idArticuloS=articulos.idArticulo and articulo_tallas.estadoArticuloTalla!=0) as cant 
+            from articulos where articulos.estadoArticulo!=0 order by articulos.idArticulo ASC) as b where b.cant !=0 
+            and generoArticulo=?", [$generoArticulo]);
+
+        return view('shop.productsmujer')->with(['Titulo' => 'Artículos ' . $genero, 'products' => $products, 'genderTitulo' => 'Todos', 'genero' => $genero]);
+    }
+
+    public function showProductsFilter($genero, Request $request)
+    {
+        if ($genero == 'mujeres') {
+            $generoArticulo = 2;
+        } else {
+            if ($genero == 'hombres') {
+                $generoArticulo = 1;
+            } else {
+                return redirect()->route('main');
+            }
+        }
+        if ($request->categoria) {
+            $products = DB::select("select * from (SELECT *,(select COUNT(*) from articulo_tallas where 
+            articulo_tallas.idArticuloS=articulos.idArticulo and articulo_tallas.estadoArticuloTalla!=0) as cant 
+            from articulos where articulos.estadoArticulo!=0 order by articulos.idArticulo ASC) as b where b.cant !=0 
+            and generoArticulo=? and categoriaArticulo=?", [$generoArticulo,$request->categoria]);
+        }else{
+            $products = DB::select("select * from (SELECT *,(select COUNT(*) from articulo_tallas where 
+            articulo_tallas.idArticuloS=articulos.idArticulo and articulo_tallas.estadoArticuloTalla!=0) as cant 
+            from articulos where articulos.estadoArticulo!=0 order by articulos.idArticulo ASC) as b where b.cant !=0 
+            and generoArticulo=?", [$generoArticulo]);
+        }
+        for ($i = 0; $i < count($products); $i++) {
+            if ($products[$i]->photoArticulo) {
+                $products[$i]->photoArticulo = asset('store/' . $products[$i]->photoArticulo);
+            }
+        }
+        $lenght = count($products);
+        return [$products, $lenght];
+    }
 
     public function showProduct($nombreproducto)
     {
