@@ -19365,6 +19365,7 @@ var vm = new Vue({
       _this.cant = response.data[2];
       _this.totalcart = response.data[1];
       _this.componentKey += 1;
+      console.log(response);
     });
   },
   methods: {
