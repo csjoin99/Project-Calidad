@@ -6,17 +6,14 @@
             <div class="col-lg-8">
                 <div class="card wish-list mb-3">
                     <div class="card-body">
-                        <h5>Carrito con <span>@{{ cant }}</span> artículo(s)</h5>
-                        <p v-if="message"> @{{ message }} </p>
-                        {{-- @if (session()->has('success_message'))
-                            <p> {{ session()->get('success_message') }} </p>
-                        @endif --}}
+                        <h5>Carrito con <span v-text="cant"></span> artículo(s)</h5>
+                        <p v-if="message" v-text="message"></p>
                         <div v-for="item in items">
                             <hr class="mb-4">
                             <div class="row mb-4 mt-5">
                                 <div class="col-md-5 col-lg-3 col-xl-3">
                                     <div class="view zoom overlay z-depth-1 rounded mb-3 mb-md-0">
-                                        <a :href="'/products/'+item.name">
+                                        <a :href="'/product/'+item.name">
                                             <img class="img-fluid w-100" v-if="item.options.photoArticulo" v-bind:src="'store/'+item.options.photoArticulo" alt="">
                                             <img class="img-fluid w-100" v-else v-bind:src="'store/no-image.jpg'" alt="">       
                                         </a>
@@ -26,11 +23,11 @@
                                     <div>
                                         <div class="d-flex justify-content-between">
                                             <div>
-                                                <h5>@{{ item.name }}</h5>
-                                                <p class="mb-3 text-muted text-uppercase small">
-                                                    @{{ item.options.categoriaArticulo }}</p>
+                                                <h5 v-text="item.name"></h5>
+                                                <p class="mb-3 text-muted text-uppercase small" v-text="item.options.categoriaArticulo">
+                                                    </p>
                                                 <p class="mb-3 text-muted text-uppercase small">Talla
-                                                    @{{ item.options.nombreTalla }}</p>
+                                                    <span v-text="item.options.nombreTalla"></span></p>
                                             </div>
                                             <div>
                                                 <div class="def-number-input number-input safari_only mb-0 w-100">
@@ -51,7 +48,7 @@
                                                     <i class="fas fa-trash-alt mr-1 text-red"></i> Quitar artículo
                                                 </button>
                                             </div>
-                                            <p class="mb-0"><span><strong>S/. @{{ item.price }}</strong></span></p>
+                                            <p class="mb-0"><span><strong>S/. <span v-text="item.price"></span></strong></span></p>
                                         </div>
                                     </div>
                                 </div>
@@ -68,7 +65,7 @@
                             <li
                                 class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
                                 Subtotal
-                                <span>S/. @{{totalcart.subtotal}} </span>
+                                <span>S/.  <span v-text="totalcart.subtotal"></span></span>
                             </li>
                             <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0">
                                 Costo de envío
@@ -77,14 +74,14 @@
                             <li
                                 class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
                                 IGV
-                                <span>S/. @{{totalcart.igv}} </span>
+                                <span>S/. <span v-text="totalcart.igv"></span></span>
                             </li>
                             <li
                                 class="list-group-item d-flex justify-content-between align-items-center border-right-0 border-bottom-0 border-left-0 px-0 mb-3">
                                 <div>
                                     <strong>Monto total</strong>
                                 </div>
-                                <span><strong>S/. @{{totalcart.total}}</strong></span>
+                                <span><strong>S/. <span v-text="totalcart.total"></span></strong></span>
                             </li>
                         </ul>
                         <a class="btn btn-primary btn-block waves-effect waves-light"
@@ -97,7 +94,7 @@
             <div class="card wish-list mb-3">
                 <div class="card-body">
                     <h5 class="mb-5">El carrito de compras no tiene artículos</h5>
-                    <a href=" {{ route('shop.products.hombre') }} ">Seguir comprando</a>
+                    <a href=" {{ route('shop.products','hombres') }} ">Seguir comprando</a>
                 </div>
             </div>
         </div>
@@ -137,6 +134,11 @@
 </div>
 <script src="{{ asset('js/app.js') }}"></script>
 <script src="{{ asset('js/cart.js') }}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/javascript.util/0.12.12/javascript.util.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 @endsection
 
 
