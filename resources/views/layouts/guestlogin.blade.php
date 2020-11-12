@@ -21,14 +21,10 @@
                     src="{{ asset('images/logo.png') }}"></a>
             <ul class="nav-options">
                 <li>
-                    <a
-                        href="{{ route('shop.products.hombre') }}">Hombre
-                    </a>
+                    <a href="{{ route('shop.products','hombres') }}">Hombre</a>
                 </li>
                 <li>
-                    <a
-                        href="{{ route('shop.products.mujer') }}">Mujer</a>
-
+                    <a href="{{ route('shop.products','mujeres') }}">Mujer</a>
                 </li>
                 <li>
                     <a
