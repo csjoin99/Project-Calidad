@@ -73,8 +73,12 @@ Route::patch('/cart/{product}', [App\Http\Controllers\Shoppingcart::class, 'upda
 
 /* Productos compra */
 //Lista productos mujer
-Route::get('/products/mujer', [App\Http\Controllers\ArticuloController::class, 'showProductsMujer'] )->name('shop.products.mujer');
+//Route::get('/products/mujer', [App\Http\Controllers\ArticuloController::class, 'showProductsMujer'] )->name('shop.products.mujer');
 //Lista productos hombre
-Route::get('/products/hombre', [App\Http\Controllers\ArticuloController::class, 'showProductsHombre'] )->name('shop.products.hombre');
+//Route::get('/products/hombre', [App\Http\Controllers\ArticuloController::class, 'showProductsHombre'] )->name('shop.products.hombre');
 //Producto info
-Route::get('/products/{product}', [App\Http\Controllers\ArticuloController::class, 'showProduct'] )->name('shop.product');
+Route::get('/product/{product}', [App\Http\Controllers\ArticuloController::class, 'showProduct'] )->name('shop.product');
+//Test
+Route::get('/products/{gender}', [App\Http\Controllers\ArticuloController::class, 'showProducts'] )->name('shop.products');
+Route::get('/productsget/{gender}', [App\Http\Controllers\ArticuloController::class, 'showProductsFilter'] )->name('shop.products.filter');
+Route::post('/productsget/{gender}', [App\Http\Controllers\ArticuloController::class, 'showProductsFilter'] )->name('shop.products.filterpost');
