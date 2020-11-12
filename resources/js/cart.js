@@ -27,6 +27,7 @@ const vm = new Vue({
             this.cant = response.data[2]
             this.totalcart = response.data[1]
             this.componentKey += 1
+            console.log(response)
         })
     },
     methods: {
