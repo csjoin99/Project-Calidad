@@ -95,9 +95,8 @@
                         <div class="card-text">
                             Jeans al mejor precio
                         </div>
-                        <a href="{{ route('shop.products.hombre') }}" class="btn btn-success btn-lg mt-3">Ver catalogo</a>
+                        <a href="{{ route('shop.products','hombres') }}" class="btn btn-success btn-lg mt-3">Ver catalogo</a>
                     </div>
-
                 </div>
             </div>
             <div class="col-md-6 text-center">
@@ -110,9 +109,8 @@
                         <div class="card-text">
                             Pantalones al mejor precio
                         </div>
-                        <a href="{{ route('shop.products.mujer') }}" class="btn btn-success btn-lg mt-3">Ver catalogo</a>
+                        <a href="{{ route('shop.products','hombres') }}" class="btn btn-success btn-lg mt-3">Ver catalogo</a>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -138,7 +136,6 @@
         </div>
     </div>
     <section class="ubicacion" id="Ubicanos">
-
         <div class="container">
             <h3 class="text-center text-uppercase py-5">Nuestra ubicacion</h3>
             <div class="mapa">
@@ -147,9 +144,7 @@
                     frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
             </div>
         </div>
-
     </section>
 </div>
-
 @endsection
 
