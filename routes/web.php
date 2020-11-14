@@ -39,6 +39,8 @@ Route::post('/admin/articulos/destroy/{id}', [App\Http\Controllers\ArticuloContr
 Route::post('/admin/login', [App\Http\Controllers\Auth\LoginController::class, 'adminLogin'])->name('login.admin');
 //Articulo Talla
 Route::get('/admin/articulostalla', [App\Http\Controllers\AdminController::class, 'articulosTallaShow'] )->name('admin.articulotalla');
+//Articulos obtener datos
+Route::get('/admin/articulostalla/get', [App\Http\Controllers\ArticuloTallaController::class, 'articulosTallaGet'] )->name('admin.articulotalla');
 //Articulo talla obtener añadir
 Route::patch('/admin/articulostalla/obtain/{id}', [App\Http\Controllers\ArticuloTallaController::class, 'getTallaArticulo'] )->name('admin.articulotalla.obtain');
 //Articulo talla store
@@ -46,7 +48,7 @@ Route::post('/admin/articulostalla/store', [App\Http\Controllers\ArticuloTallaCo
 //Articulo talla edit
 Route::post('/admin/articulostalla/edit', [App\Http\Controllers\ArticuloTallaController::class, 'edit'] )->name('admin.articulotalla.edit');
 //Articulo talla destroy
-Route::post('/admin/articulostalla/destroy', [App\Http\Controllers\ArticuloTallaController::class, 'destroy'] )->name('admin.articulotalla.destroy');
+Route::post('/admin/articulostalla/destroy/{id}', [App\Http\Controllers\ArticuloTallaController::class, 'destroy'] )->name('admin.articulotalla.destroy');
 
 /* Pagina compra */
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('main');
