@@ -36,33 +36,37 @@ class ArticuloTallaController extends Controller
      */
     public function store(Request $request)
     {
-
-        $check = DB::table('articulo_tallas')->select('estadoArticuloTalla')
-            ->where('idArticuloS', '=', $request->idArticulo)
-            ->where('idTallaS', '=', $request->tallaArticulo)->get();
-        if (!$check->isEmpty()) {
-            if ($check[0]->estadoArticuloTalla == 0) {
-                DB::table('articulo_tallas')
-                    ->where('idArticuloS', '=', $request->idArticulo)
-                    ->where('idTallaS', $request->tallaArticulo)
-                    ->update([
-                        'stockArticulo' => $request->stockArticulo,
-                        'estadoArticuloTalla' => 1
-                    ]);
+        try {
+            $check = DB::table('articulo_tallas')->select('estadoArticuloTalla')
+                ->where('idArticuloS', '=', $request->idArticulo)
+                ->where('idTallaS', '=', $request->tallaArticulo)->get();
+            
+            if (!$check->isEmpty()) {
+                if ($check[0]->estadoArticuloTalla == 0) {
+                    DB::table('articulo_tallas')
+                        ->where('idArticuloS', '=', $request->idArticulo)
+                        ->where('idTallaS', $request->tallaArticulo)
+                        ->update([
+                            'stockArticulo' => $request->stockArticulo,
+                            'estadoArticuloTalla' => 1
+                        ]);
+                } else {
+                    return response()->json(['success' => false,'message'=>'No se pudo añadir la talla']);
+                }
+            } else {
+                DB::table('articulo_tallas')->insert([
+                    [
+                        'idArticuloS' => $request->idArticulo,
+                        'idTallaS' => $request->tallaArticulo,
+                        'stockArticulo' => $request->stockArticulo
+                    ]
+                ]);
             }
-            else{
-                return redirect()->route('admin.articulotalla')->withSuccess('Se agrego la talla exitosamente');;
-            }
-        } else {
-            DB::table('articulo_tallas')->insert([
-                [
-                    'idArticuloS' => $request->idArticulo,
-                    'idTallaS' => $request->tallaArticulo,
-                    'stockArticulo' => $request->stockArticulo
-                ]
-            ]);
+            return response()->json(['success' => true,'message'=>'Se agrego la talla exitosamente']);
+        } catch (\Throwable $th) {
+            return response()->json(['success' => false,'message'=>'No se pudo añadir la talla']);
         }
-        return redirect()->route('admin.articulotalla')->withSuccess('Se agrego la talla exitosamente');;
+        
     }
 
     /**
@@ -84,12 +88,16 @@ class ArticuloTallaController extends Controller
      */
     public function edit(Request $request)
     {
-        DB::table('articulo_tallas')
+        try {
+            DB::table('articulo_tallas')
             ->where('idArticuloTalla', $request->idArticulo)
             ->update([
                 'stockArticulo' => $request->stockArticulo,
             ]);
-        return redirect()->route('admin.articulotalla')->withSuccess('Se editaron los datos exitosamente');;
+            return response()->json(['success' => true,'message'=>'Se editaron los datos exitosamente']);
+        } catch (\Throwable $th) {
+            return response()->json(['success' => false,'message'=>'No se pudo editar el stock de la talla']);
+        }
     }
 
     /**
@@ -110,14 +118,18 @@ class ArticuloTallaController extends Controller
      * @param  \App\Models\articulo_talla  $articulo_talla
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy($id)
     {
-        DB::table('articulo_tallas')
-            ->where('idArticuloTalla', $request->idArticulo)
+        try {
+            DB::table('articulo_tallas')
+            ->where('idArticuloTalla', $id)
             ->update([
                 'estadoArticuloTalla' => 0,
             ]);
-        return redirect()->route('admin.articulotalla')->withSuccess('Se elimino la talla exitosamente');;
+            return response()->json(['success' => true,'message'=>'Se elimino la talla exitosamente']);
+        } catch (\Throwable $th) {
+            return response()->json(['success' => false,'message'=>'No se pudo eliminar la talla']);
+        }
     }
 
     public function getTallaArticulo(Request $request, $id)
@@ -127,6 +139,27 @@ class ArticuloTallaController extends Controller
         articulo_tallas WHERE articulo_tallas.idArticuloS=? and articulo_tallas.estadoArticuloTalla!=0) as b on 
         a.idTalla=b.idTallaS) as b where idArticulos IS NULL and categoriaTalla=?", [$id, $request->category]);
 
-        return response()->json(['talla' => $tallas, 'id' => $id]);
+        return response()->json(['talla' => $tallas]);
+    }
+    public function articulosTallaGet()
+    {
+        $articulos = DB::select("SELECT articulos.idArticulo, articulos.estadoArticulo, articulos.nombreArticulo, articulos.categoriaArticulo,(select COUNT(*) from articulo_tallas where articulo_tallas.idArticuloS=articulos.idArticulo and articulo_tallas.estadoArticuloTalla!=0) 
+        as cant from articulos where articulos.estadoArticulo!=0  order by articulos.idArticulo ASC");
+        $articuloscant = count($articulos);
+        $articuloTallas = DB::select("SELECT `articulo_tallas`.`idArticuloTalla`, `articulo_tallas`.`idArticuloS`, `articulo_tallas`.`idTallaS`, `articulo_tallas`.`stockArticulo`, `tallas`.`nombreTalla`
+        FROM `articulo_tallas` LEFT JOIN `tallas` ON `articulo_tallas`.`idTallaS` = `tallas`.`idTalla` where 
+        `articulo_tallas`.`estadoArticuloTalla`!=0");
+        /*  */
+        for ($i = 0; $i < $articuloscant; $i++) {
+            $arrayTallas = array();
+            for ($j = 0; $j < count($articuloTallas); $j++) {
+                if($articulos[$i]->idArticulo == $articuloTallas[$j]->idArticuloS){
+                    array_push($arrayTallas,(object)$articuloTallas[$j]);
+                }
+            }
+            $articulos[$i]->arrayTalla=$arrayTallas;
+            /* array_push($articulos[$i],(object)$arrayTallas); */
+        }
+        return ['articulos' => $articulos, 'articuloscant' => $articuloscant];
     }
 }
