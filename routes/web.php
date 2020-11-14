@@ -27,12 +27,14 @@ Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'] )->n
 Route::get('/admin/users', [App\Http\Controllers\AdminController::class, 'usuariosShow'] )->name('admin.users');
 //Articulos show
 Route::get('/admin/articulos', [App\Http\Controllers\AdminController::class, 'articulosShow'] )->name('admin.articulos');
+//Articulos obtener datos
+Route::get('/admin/articulosget', [App\Http\Controllers\AdminController::class, 'articulosGet'] )->name('admin.get.articulos');
 //Articulos insert
 Route::post('/admin/articulos/store', [App\Http\Controllers\ArticuloController::class, 'store'] )->name('admin.articulos.store');
 //Articulos edit
-Route::post('/admin/articulos/edit', [App\Http\Controllers\ArticuloController::class, 'edit'] )->name('admin.articulos.edit');
+Route::post('/admin/articulos/edit/{id}', [App\Http\Controllers\ArticuloController::class, 'edit'] )->name('admin.articulos.edit');
 //Articulo destroy
-Route::post('/admin/articulos/destroy', [App\Http\Controllers\ArticuloController::class, 'destroy'] )->name('admin.articulos.destroy');
+Route::post('/admin/articulos/destroy/{id}', [App\Http\Controllers\ArticuloController::class, 'destroy'] )->name('admin.articulos.destroy');
 //Login verificación
 Route::post('/admin/login', [App\Http\Controllers\Auth\LoginController::class, 'adminLogin'])->name('login.admin');
 //Articulo Talla
@@ -72,13 +74,11 @@ Route::delete('/cart/{product}', [App\Http\Controllers\Shoppingcart::class, 'des
 Route::patch('/cart/{product}', [App\Http\Controllers\Shoppingcart::class, 'update'] )->name('shop.cart.update');
 
 /* Productos compra */
-//Lista productos mujer
-//Route::get('/products/mujer', [App\Http\Controllers\ArticuloController::class, 'showProductsMujer'] )->name('shop.products.mujer');
-//Lista productos hombre
-//Route::get('/products/hombre', [App\Http\Controllers\ArticuloController::class, 'showProductsHombre'] )->name('shop.products.hombre');
 //Producto info
 Route::get('/product/{product}', [App\Http\Controllers\ArticuloController::class, 'showProduct'] )->name('shop.product');
-//Test
+//Productos filtro genero
 Route::get('/products/{gender}', [App\Http\Controllers\ArticuloController::class, 'showProducts'] )->name('shop.products');
+//Productos filtro genero obtener consulta
 Route::get('/productsget/{gender}', [App\Http\Controllers\ArticuloController::class, 'showProductsFilter'] )->name('shop.products.filter');
+//Productos filtro categoria
 Route::post('/productsget/{gender}', [App\Http\Controllers\ArticuloController::class, 'showProductsFilter'] )->name('shop.products.filterpost');
