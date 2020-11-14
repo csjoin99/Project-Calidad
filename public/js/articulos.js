@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -19323,12 +19323,14 @@ module.exports = function(module) {
 
 /***/ }),
 
-/***/ "./resources/js/showarticulos.js":
-/*!***************************************!*\
-  !*** ./resources/js/showarticulos.js ***!
-  \***************************************/
+/***/ "./resources/js/articulos.js":
+/*!***********************************!*\
+  !*** ./resources/js/articulos.js ***!
+  \***********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var _require = __webpack_require__(/*! axios */ "./node_modules/axios/index.js"),
     Axios = _require["default"];
@@ -19337,53 +19339,149 @@ var _require2 = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.
     forEach = _require2.forEach;
 
 var vm = new Vue({
-  el: '#showarticulos',
+  el: '#articulosadmin',
   data: function data() {
-    return {
+    return _defineProperty({
       articulos: [],
-      categoria: 'Todos',
+      message: '',
       cant: 0,
+      articulo: {
+        idArticulo: "",
+        nombreArticulo: "",
+        categoriaArticulo: "",
+        precioArticulo: "",
+        generoArticulo: "",
+        photoArticulo: "",
+        estadoArticulo: ""
+      },
+      newarticulo: {
+        idArticulo: "",
+        nombreArticulo: "",
+        categoriaArticulo: "",
+        precioArticulo: "",
+        generoArticulo: "",
+        photoArticulo: "",
+        estadoArticulo: ""
+      },
       componentKey: 0,
-      gender: window.gender
-    };
+      tempimg: '',
+      iddelete: '',
+      success: ''
+    }, "message", '');
   },
   created: function created() {
-    Axios.get("/productsget/".concat(this.gender)).then(function (response) {
+    Axios.get('/admin/articulosget').then(function (response) {
       vm.articulos = response.data[0];
       vm.cant = response.data[1];
-      vm.categoria = 'Todos';
-      console.log(response);
     });
   },
   methods: {
-    filtrar: function filtrar(filtro) {
-      if (!filtro) {
-        vm.categoria = 'Todos';
-      } else {
-        vm.categoria = filtro;
-      }
-
-      Axios.post("/productsget/".concat(vm.gender), {
-        categoria: filtro
-      }).then(function (response) {
+    obtener: function obtener() {
+      Axios.get('/admin/articulosget').then(function (response) {
         vm.articulos = response.data[0];
         vm.cant = response.data[1];
-        console.log(vm.categoria);
+        vm.componentKey++;
       });
+    },
+    modificarshow: function modificarshow(datos) {
+      vm.articulo.idArticulo = datos.idArticulo;
+      vm.articulo.nombreArticulo = datos.nombreArticulo;
+      vm.articulo.categoriaArticulo = datos.categoriaArticulo;
+      vm.articulo.generoArticulo = datos.generoArticulo;
+      vm.articulo.precioArticulo = datos.precioArticulo;
+      vm.articulo.photoArticulo = datos.photoArticulo;
+      vm.tempimg = '';
+      $('#editEmployeeModal').modal('show');
+    },
+    modificar: function modificar(idarticulo) {
+      $('#editEmployeeModal').modal('hide');
+      Axios.post("/admin/articulos/edit/".concat(idarticulo), {
+        nombreArticulo: vm.articulo.nombreArticulo,
+        categoriaArticulo: vm.articulo.categoriaArticulo,
+        generoArticulo: vm.articulo.generoArticulo,
+        precioArticulo: vm.articulo.precioArticulo,
+        photoArticulo: vm.tempimg
+      }).then(function (response) {
+        vm.obtener();
+        vm.success = response.data.success;
+        vm.message = response.data.message;
+      })["catch"](function (error) {
+        vm.obtener();
+      });
+    },
+    añadirShow: function aAdirShow() {
+      vm.newarticulo.idArticulo = '';
+      vm.newarticulo.nombreArticulo = '';
+      vm.newarticulo.categoriaArticulo = '';
+      vm.newarticulo.precioArticulo = '';
+      vm.newarticulo.generoArticulo = '';
+      vm.newarticulo.photoArticulo = '';
+      vm.newarticulo.estadoArticulo = '';
+      $('#addEmployeeModal').modal('show');
+    },
+    añadir: function aAdir() {
+      $('#addEmployeeModal').modal('hide');
+      Axios.post("/admin/articulos/store", {
+        nombreArticulo: vm.newarticulo.nombreArticulo,
+        categoriaArticulo: vm.newarticulo.categoriaArticulo,
+        precioArticulo: vm.newarticulo.precioArticulo,
+        generoArticulo: vm.newarticulo.generoArticulo,
+        photoArticulo: vm.tempimg
+      }).then(function (response) {
+        vm.obtener();
+        vm.success = response.data.success;
+        vm.message = response.data.message;
+      })["catch"](function (error) {
+        vm.obtener();
+      });
+    },
+    deleteShow: function deleteShow(id) {
+      vm.iddelete = id;
+      $('#deleteEmployeeModal').modal('show');
+    },
+    eliminar: function eliminar(id) {
+      $('#deleteEmployeeModal').modal('hide');
+      Axios.post("/admin/articulos/destroy/".concat(vm.iddelete)).then(function (response) {
+        vm.obtener();
+        vm.success = response.data.success;
+        vm.message = response.data.message;
+      })["catch"](function (error) {
+        vm.obtener();
+      });
+    },
+    imageChange: function imageChange(e) {
+      var reader = new FileReader();
+      reader.readAsDataURL(e.target.files[0]);
+
+      reader.onload = function (e) {
+        vm.tempimg = e.target.result;
+      };
     }
   }
 });
 
 /***/ }),
 
-/***/ 3:
-/*!*********************************************!*\
-  !*** multi ./resources/js/showarticulos.js ***!
-  \*********************************************/
+/***/ "./resources/sass/app.scss":
+/*!*********************************!*\
+  !*** ./resources/sass/app.scss ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ 0:
+/*!*******************************************************************!*\
+  !*** multi ./resources/js/articulos.js ./resources/sass/app.scss ***!
+  \*******************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! D:\Laravel\ClothingandMore\clothingandmore\resources\js\showarticulos.js */"./resources/js/showarticulos.js");
+__webpack_require__(/*! D:\Laravel\ClothingandMore\clothingandmore\resources\js\articulos.js */"./resources/js/articulos.js");
+module.exports = __webpack_require__(/*! D:\Laravel\ClothingandMore\clothingandmore\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
