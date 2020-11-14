@@ -187,6 +187,7 @@
         </div>
     </div>
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/articulo-talla.js') }}"></script>
     <script>
         const addbutton = document.getElementsByName('addbutton');
         const tallaArticulo = document.getElementById('tallaArticulo');
