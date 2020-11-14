@@ -118,6 +118,16 @@ class AdminController extends Controller
         $articulos = DB::select("SELECT `articulos`.* FROM `articulos` where `articulos`.`estadoArticulo`!=0");
         return view('admin.articulos')->with('articulos', $articulos);;
     }
+    public function articulosGet(){
+        $articulos = DB::select("SELECT `articulos`.* FROM `articulos` where `articulos`.`estadoArticulo`!=0");
+        for ($i = 0; $i < count($articulos); $i++) {
+            if ($articulos[$i]->photoArticulo) {
+                $articulos[$i]->photoArticulo = asset('store/' . $articulos[$i]->photoArticulo);
+            }
+        }
+        $length = count($articulos);
+        return [$articulos,$length];
+    }
     public function articulosTallaShow()
     {
         if (!Auth::guard('admin')->check()) {

@@ -36,75 +36,66 @@ class ArticuloController extends Controller
      */
     public function store(Request $request)
     {
-
         try {
-            if ($previousid = DB::table('articulos')->where('nombreArticulo', $request->nombreArticulo)->first()) {
-                if ($archivo = $request->file('fotoArticulo')) {
-                    $currentimage = DB::table('articulos')->where('idArticulo', $previousid->idArticulo)->value('photoArticulo');
-                    if ($currentimage) {
-                        $imgpath = public_path() . '/store/' . $currentimage;
-                        if (file_exists($imgpath)) {
-                            unlink($imgpath);
-                        }
+            if ($previousarticulo = DB::table('articulos')
+            ->where(['nombreArticulo' => $request->nombreArticulo,'estadoArticulo'=>0])->first()) {
+                $id = $previousarticulo->idArticulo;
+                DB::table('articulos')
+                    ->where('idArticulo', $id)
+                    ->update([
+                        'nombreArticulo' => $request->nombreArticulo,
+                        'categoriaArticulo' => $request->categoriaArticulo,
+                        'precioArticulo' => $request->precioArticulo,
+                        'generoArticulo' => $request->generoArticulo,
+                        'estadoArticulo' => 1
+                    ]);
+            } else {
+                $id = DB::table('articulos')->insertGetId(
+                    [
+                        'nombreArticulo' => $request->nombreArticulo,
+                        'categoriaArticulo' => $request->categoriaArticulo,
+                        'precioArticulo' => $request->precioArticulo,
+                        'generoArticulo' => $request->generoArticulo,
+                        'codigoArticulo' => null
+                    ]
+                );
+                if ($id < 1000) {
+                    $codigo = 'PO00' . strval($id);
+                } else {
+                    if ($id < 100) {
+                        $codigo = 'PO0' . strval($id);
+                    } else {
+                        $codigo = 'PO' . strval($id);
                     }
-                    $nombreimage = $request->nombreArticulo . $request->idArticulo . ".jpg";
-                    $archivo->move('store', $nombreimage);
-                    DB::table('articulos')
-                        ->where('idArticulo', $previousid->idArticulo)
-                        ->update([
-                            'nombreArticulo' => $request->nombreArticulo,
-                            'categoriaArticulo' => $request->categoriaArticulo,
-                            'precioArticulo' => $request->precioArticulo,
-                            'generoArticulo' => $request->generoArticulo,
-                            'photoArticulo' => $nombreimage,
-                            'estadoArticulo' => 1
-                        ]);
-                } else {
-                    DB::table('articulos')
-                        ->where('idArticulo', $previousid->idArticulo)
-                        ->update([
-                            'nombreArticulo' => $request->nombreArticulo,
-                            'categoriaArticulo' => $request->categoriaArticulo,
-                            'precioArticulo' => $request->precioArticulo,
-                            'generoArticulo' => $request->generoArticulo,
-                            'estadoArticulo' => 1
-                        ]);
                 }
-                return redirect()->route('admin.articulos')->with('success_message', 'Se agrego el articulo exitosamente');
+                DB::table('articulos')
+                    ->where('idArticulo', $id)
+                    ->update([
+                        'codigoArticulo' => $codigo
+                    ]);
             }
-            $id = DB::table('articulos')->insertGetId(
-                [
-                    'nombreArticulo' => $request->nombreArticulo,
-                    'categoriaArticulo' => $request->categoriaArticulo,
-                    'precioArticulo' => $request->precioArticulo,
-                    'generoArticulo' => $request->generoArticulo,
-                    'codigoArticulo' => null
-                ]
-            );
-            if ($id < 1000) {
-                $codigo = 'PO00' . strval($id);
-            } else {
-                if ($id < 100) {
-                    $codigo = 'PO0' . strval($id);
-                } else {
-                    $codigo = 'PO' . strval($id);
+            if ($request->photoArticulo) {
+                $currentimage = DB::table('articulos')->where('idArticulo', $id)->value('photoArticulo');
+                if ($currentimage) {
+                    $imgpath = public_path() . '/store/' . $currentimage;
+                    if (file_exists($imgpath)) {
+                        unlink($imgpath);
+                    }
                 }
+                $exploded = explode(',', $request->photoArticulo);
+                $decoded = base64_decode($exploded[1]);
+                $fileName = $request->nombreArticulo . $id . '.jpg';
+                $path = public_path() . '/store/' . $fileName;
+                file_put_contents($path, $decoded);
+                DB::table('articulos')
+                    ->where('idArticulo', $id)
+                    ->update([
+                        'photoArticulo' => $fileName
+                    ]);
             }
-            if ($archivo = $request->file('fotoArticulo')) {
-                $nombreimage = $request->nombreArticulo . $id . ".jpg";
-                $archivo->move('store', $nombreimage);
-            } else {
-                $nombreimage = '';
-            }
-            DB::table('articulos')
-                ->where('idArticulo', $id)
-                ->update([
-                    'codigoArticulo' => $codigo,
-                    'photoArticulo' => $nombreimage
-                ]);
-            return redirect()->route('admin.articulos')->with('success_message', 'Se agrego el articulo exitosamente');
+            return ['success' => true, 'message' => 'Se agrego el articulo exitosamente'];
         } catch (\Throwable $th) {
-            return redirect()->route('admin.articulos')->with('failure_message', 'No se pudo registrar el articulo');
+            return ['success' => false, 'message' => 'No se pudo agregar el articulo'];
         }
     }
 
@@ -125,59 +116,46 @@ class ArticuloController extends Controller
      * @param  \App\Models\articulo  $articulo
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request)
+    public function edit($id, Request $request)
     {
         try {
-            $currentimage = DB::table('articulos')->where('idArticulo', $request->idArticulo)->value('photoArticulo');
-            if ($currentimage) {
-                $imgpath = public_path() . '/store/' . $currentimage;
-                if ($archivo = $request->file('fotoArticulo')) {
+            if ($request->photoArticulo) {
+                $currentimage = DB::table('articulos')->where('idArticulo', $id)->value('photoArticulo');
+                if ($currentimage) {
+                    $imgpath = public_path() . '/store/' . $currentimage;
                     if (file_exists($imgpath)) {
                         unlink($imgpath);
                     }
-                    $nombreimage = $request->nombreArticulo . $request->idArticulo . ".jpg";
-                    $archivo->move('store', $nombreimage);
-                    DB::table('articulos')
-                        ->where('idArticulo', $request->idArticulo)
-                        ->update([
-                            'nombreArticulo' => $request->nombreArticulo,
-                            'categoriaArticulo' => $request->categoriaArticulo,
-                            'precioArticulo' => $request->precioArticulo,
-                            'generoArticulo' => $request->generoArticulo,
-                            'photoArticulo' => $nombreimage
-                        ]);
-                    return redirect()->route('admin.articulos')->with('success_message', 'Se edito el articulo exitosamente');
                 }
+                $exploded = explode(',', $request->photoArticulo);
+                $decoded = base64_decode($exploded[1]);
+                $fileName = $request->nombreArticulo . $id . '.jpg';
+                $path = public_path() . '/store/' . $fileName;
+                file_put_contents($path, $decoded);
+                DB::table('articulos')
+                    ->where('idArticulo', $id)
+                    ->update([
+                        'nombreArticulo' => $request->nombreArticulo,
+                        'categoriaArticulo' => $request->categoriaArticulo,
+                        'precioArticulo' => $request->precioArticulo,
+                        'generoArticulo' => $request->generoArticulo,
+                        'photoArticulo' => $fileName
+                    ]);
             } else {
-                if ($archivo = $request->file('fotoArticulo')) {
-                    $nombreimage = $request->nombreArticulo . $request->idArticulo . ".jpg";
-                    $archivo->move('store', $nombreimage);
-                    DB::table('articulos')
-                        ->where('idArticulo', $request->idArticulo)
-                        ->update([
-                            'nombreArticulo' => $request->nombreArticulo,
-                            'categoriaArticulo' => $request->categoriaArticulo,
-                            'precioArticulo' => $request->precioArticulo,
-                            'generoArticulo' => $request->generoArticulo,
-                            'photoArticulo' => $nombreimage
-                        ]);
-                    return redirect()->route('admin.articulos')->with('success_message', 'Se edito el articulo exitosamente');
-                }
+                DB::table('articulos')
+                    ->where('idArticulo', $id)
+                    ->update([
+                        'nombreArticulo' => $request->nombreArticulo,
+                        'categoriaArticulo' => $request->categoriaArticulo,
+                        'precioArticulo' => $request->precioArticulo,
+                        'generoArticulo' => $request->generoArticulo
+                    ]);
             }
-            DB::table('articulos')
-                ->where('idArticulo', $request->idArticulo)
-                ->update([
-                    'nombreArticulo' => $request->nombreArticulo,
-                    'categoriaArticulo' => $request->categoriaArticulo,
-                    'precioArticulo' => $request->precioArticulo,
-                    'generoArticulo' => $request->generoArticulo
-                ]);
-            return redirect()->route('admin.articulos')->with('success_message', 'Se edito el articulo exitosamente');
+            return ['success' => true, 'message' => 'Se edito el articulo exitosamente'];
         } catch (\Throwable $th) {
-            return redirect()->route('admin.articulos')->with('failure_message', 'No se pudo editar el articulo');;
+            return ['success' => false, 'message' => 'No se pudo editar el articulo'];
         }
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -196,17 +174,25 @@ class ArticuloController extends Controller
      * @param  \App\Models\articulo  $articulo
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request)
+    public function destroy($id)
     {
         try {
+            $currentimage = DB::table('articulos')->where('idArticulo', $id)->value('photoArticulo');
+            if ($currentimage) {
+                $imgpath = public_path() . '/store/' . $currentimage;
+                if (file_exists($imgpath)) {
+                    unlink($imgpath);
+                }
+            }
             DB::table('articulos')
-                ->where('idArticulo', $request->idArticulo)
+                ->where('idArticulo', $id)
                 ->update([
-                    'estadoArticulo' => 0
+                    'estadoArticulo' => 0,
+                    'photoArticulo' => null
                 ]);
-            return redirect()->route('admin.articulos')->with('success_message', 'Se elimino el articulo exitosamente');
+            return ['success' => true, 'message' => 'Se elimino el articulo exitosamente'];
         } catch (\Throwable $th) {
-            return redirect()->route('admin.articulos')->with('failure_message', 'No se pudo eliminar el articulo');;
+            return ['success' => false, 'message' => 'No se pudo eliminar el articulo'];
         }
     }
 
@@ -277,8 +263,8 @@ class ArticuloController extends Controller
             $products = DB::select("select * from (SELECT *,(select COUNT(*) from articulo_tallas where 
             articulo_tallas.idArticuloS=articulos.idArticulo and articulo_tallas.estadoArticuloTalla!=0) as cant 
             from articulos where articulos.estadoArticulo!=0 order by articulos.idArticulo ASC) as b where b.cant !=0 
-            and generoArticulo=? and categoriaArticulo=?", [$generoArticulo,$request->categoria]);
-        }else{
+            and generoArticulo=? and categoriaArticulo=?", [$generoArticulo, $request->categoria]);
+        } else {
             $products = DB::select("select * from (SELECT *,(select COUNT(*) from articulo_tallas where 
             articulo_tallas.idArticuloS=articulos.idArticulo and articulo_tallas.estadoArticuloTalla!=0) as cant 
             from articulos where articulos.estadoArticulo!=0 order by articulos.idArticulo ASC) as b where b.cant !=0 
