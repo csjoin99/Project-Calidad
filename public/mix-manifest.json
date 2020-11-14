@@ -1,6 +1,8 @@
 {
     "/js/app.js": "/js/app.js",
-    "/js/cart.js": "/js/cart.js",
+    "/js/articulo-talla.js": "/js/articulo-talla.js",
+    "/js/articulos.js": "/js/articulos.js",
     "/css/app.css": "/css/app.css",
+    "/js/cart.js": "/js/cart.js",
     "/js/showarticulos.js": "/js/showarticulos.js"
 }
