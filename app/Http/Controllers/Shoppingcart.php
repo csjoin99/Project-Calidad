@@ -5,13 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\articulo;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class Shoppingcart extends Controller
 {
     //
     public function index()
     {
-        $moreproducts = articulo::inRandomOrder()->take(4)->get();
+        $moreproducts = DB::select('select * from (SELECT *,(select COUNT(*) from articulo_tallas where 
+        articulo_tallas.idArticuloS=articulos.idArticulo and articulo_tallas.estadoArticuloTalla!=0) 
+        as cant from articulos where articulos.estadoArticulo!=0 order by articulos.idArticulo ASC) 
+        as b where b.cant !=0 ORDER BY RAND() LIMIT 4');
         return view('shop.shoppingcart')->with([
             'Titulo' => 'Carrito de compra',
             'moreproducts' => $moreproducts

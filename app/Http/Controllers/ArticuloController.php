@@ -195,57 +195,9 @@ class ArticuloController extends Controller
             return ['success' => false, 'message' => 'No se pudo eliminar el articulo'];
         }
     }
-
-    public function showProductsHombre()
-    {
-        if (request()->category) {
-            $products = DB::select("select * from (SELECT *,(select COUNT(*) from articulo_tallas where 
-            articulo_tallas.idArticuloS=articulos.idArticulo and articulo_tallas.estadoArticuloTalla!=0) as cant 
-            from articulos where articulos.estadoArticulo!=0 order by articulos.idArticulo ASC) as b where b.cant !=0 
-            and generoArticulo=1 and b.categoriaArticulo=?", [request()->category]);
-            return view('shop.productshombre')->with(['Titulo' => 'Artículos hombres', 'products' => $products, 'genderTitulo' => request()->category]);
-        }
-        $products = DB::select("select * from (SELECT *,(select COUNT(*) from articulo_tallas where 
-        articulo_tallas.idArticuloS=articulos.idArticulo and articulo_tallas.estadoArticuloTalla!=0)
-        as cant from articulos where articulos.estadoArticulo!=0 order by articulos.idArticulo ASC) as b where 
-        b.cant !=0 and generoArticulo=1");
-
-        return view('shop.productshombre')->with(['Titulo' => 'Artículos hombres', 'products' => $products, 'genderTitulo' => 'Todos']);
-    }
-
-    public function showProductsMujer()
-    {
-        if (request()->category) {
-            $products = DB::select("select * from (SELECT *,(select COUNT(*) from articulo_tallas where 
-            articulo_tallas.idArticuloS=articulos.idArticulo and articulo_tallas.estadoArticuloTalla!=0) as cant 
-            from articulos where articulos.estadoArticulo!=0 order by articulos.idArticulo ASC) as b where b.cant !=0 
-            and generoArticulo=2 and b.categoriaArticulo=?", [request()->category]);
-            return view('shop.productsmujer')->with(['Titulo' => 'Artículos mujeres', 'products' => $products, 'genderTitulo' => request()->category]);
-        }
-        $products = DB::select("select * from (SELECT *,(select COUNT(*) from articulo_tallas where 
-        articulo_tallas.idArticuloS=articulos.idArticulo and articulo_tallas.estadoArticuloTalla!=0)
-        as cant from articulos where articulos.estadoArticulo!=0 order by articulos.idArticulo ASC) as b where 
-        b.cant !=0 and generoArticulo=2");
-
-        return view('shop.productsmujer')->with(['Titulo' => 'Artículos mujeres', 'products' => $products, 'genderTitulo' => 'Todos']);
-    }
     public function showProducts($genero)
     {
-        if ($genero == 'mujeres') {
-            $generoArticulo = 2;
-        } else {
-            if ($genero == 'hombres') {
-                $generoArticulo = 1;
-            } else {
-                return redirect()->route('main');
-            }
-        }
-        $products = DB::select("select * from (SELECT *,(select COUNT(*) from articulo_tallas where 
-            articulo_tallas.idArticuloS=articulos.idArticulo and articulo_tallas.estadoArticuloTalla!=0) as cant 
-            from articulos where articulos.estadoArticulo!=0 order by articulos.idArticulo ASC) as b where b.cant !=0 
-            and generoArticulo=?", [$generoArticulo]);
-
-        return view('shop.productsmujer')->with(['Titulo' => 'Artículos ' . $genero, 'products' => $products, 'genderTitulo' => 'Todos', 'genero' => $genero]);
+        return view('shop.productsmujer')->with(['Titulo' => 'Artículos ' . $genero, 'genderTitulo' => 'Todos', 'genero' => $genero]);
     }
 
     public function showProductsFilter($genero, Request $request)
@@ -278,15 +230,17 @@ class ArticuloController extends Controller
         $lenght = count($products);
         return [$products, $lenght];
     }
-
     public function showProduct($nombreproducto)
     {
         $product = DB::table('articulos')->where('nombreArticulo', '=', $nombreproducto)->get();
-        $tallas = DB::select("SELECT `articulo_tallas`.`idArticuloTalla`, `articulo_tallas`.`idArticuloS`, `articulo_tallas`.`idTallaS`, `articulo_tallas`.`stockArticulo`, `tallas`.`nombreTalla`
-        FROM `articulo_tallas` 
-            LEFT JOIN `tallas` ON `articulo_tallas`.`idTallaS` = `tallas`.`idTalla`
+        $tallas = DB::select("SELECT `articulo_tallas`.`idArticuloTalla`, `articulo_tallas`.`idArticuloS`, 
+        `articulo_tallas`.`idTallaS`, `articulo_tallas`.`stockArticulo`, `tallas`.`nombreTalla`
+        FROM `articulo_tallas` LEFT JOIN `tallas` ON `articulo_tallas`.`idTallaS` = `tallas`.`idTalla`
         WHERE articulo_tallas.estadoArticuloTalla!=0 and `articulo_tallas`.`idArticuloS`=?", [$product[0]->idArticulo]);
-        $moreproducts = articulo::where('nombreArticulo', '!=', $nombreproducto)->inRandomOrder()->take(4)->get();
+        $moreproducts = DB::select('select * from (SELECT *,(select COUNT(*) from articulo_tallas where 
+        articulo_tallas.idArticuloS=articulos.idArticulo and articulo_tallas.estadoArticuloTalla!=0) 
+        as cant from articulos where articulos.estadoArticulo!=0 order by articulos.idArticulo ASC) 
+        as b where b.cant !=0 ORDER BY RAND() LIMIT 4');
         foreach ($tallas as $item) {
             if ($item->stockArticulo > 0) {
                 return view('shop.product')->with([
