@@ -45,7 +45,6 @@ class VentaController extends Controller
     public function index()
     {
         if (!Auth::user()) {
-
             return redirect()->route('login')->with('error', 'Debes estar logeado para hacer esta operación');
         }
         return view('shop.checkout')->with('Titulo', 'Checkout');

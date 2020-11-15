@@ -40,7 +40,7 @@ Route::post('/admin/login', [App\Http\Controllers\Auth\LoginController::class, '
 //Articulo Talla
 Route::get('/admin/articulostalla', [App\Http\Controllers\AdminController::class, 'articulosTallaShow'] )->name('admin.articulotalla');
 //Articulos obtener datos
-Route::get('/admin/articulostalla/get', [App\Http\Controllers\ArticuloTallaController::class, 'articulosTallaGet'] )->name('admin.articulotalla');
+Route::get('/admin/articulostalla/get', [App\Http\Controllers\ArticuloTallaController::class, 'articulosTallaGet'] )->name('admin.articulotalla.get');
 //Articulo talla obtener añadir
 Route::patch('/admin/articulostalla/obtain/{id}', [App\Http\Controllers\ArticuloTallaController::class, 'getTallaArticulo'] )->name('admin.articulotalla.obtain');
 //Articulo talla store
