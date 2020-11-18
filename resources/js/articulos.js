@@ -4,6 +4,7 @@ const vm = new Vue({
     el: '#articulosadmin',
     data() {
         return {
+            init: '',
             articulos: [],
             message: '',
             cant: 0,
@@ -47,6 +48,7 @@ const vm = new Vue({
             vm.lastpage = vm.pagination.last_page
             vm.pagesNumber = vm.checkpagesNumber()
             vm.isActivated = vm.checkisActivated()
+            vm.init = 1
         })
     },
     computed: {

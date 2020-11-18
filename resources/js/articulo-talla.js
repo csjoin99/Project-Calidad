@@ -27,7 +27,8 @@ const vm = new Vue({
             tallasArticulo: '',
             isActivated: '',
             pagesNumber: '',
-            lastpage: ''
+            lastpage: '',
+            init: ''
         };
     },
     created() {
@@ -38,6 +39,7 @@ const vm = new Vue({
             vm.lastpage = vm.pagination.last_page
             vm.pagesNumber = vm.checkpagesNumber()
             vm.isActivated = vm.checkisActivated()
+            vm.init = 1
         })
     },
     methods: {
