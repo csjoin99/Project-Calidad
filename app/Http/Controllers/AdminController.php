@@ -44,7 +44,6 @@ class AdminController extends Controller
     {
         //
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -55,7 +54,6 @@ class AdminController extends Controller
     {
         //
     }
-
     /**
      * Display the specified resource.
      *
@@ -66,7 +64,6 @@ class AdminController extends Controller
     {
         //
     }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -77,7 +74,6 @@ class AdminController extends Controller
     {
         //
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -89,7 +85,6 @@ class AdminController extends Controller
     {
         //
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -100,7 +95,6 @@ class AdminController extends Controller
     {
         //
     }
-
     public function usuariosShow()
     {
         if (!Auth::guard('admin')->check()) {
@@ -108,39 +102,5 @@ class AdminController extends Controller
         }
         $users = User::all();
         return view('admin.users')->with('users', $users);
-    }
-
-    public function articulosShow()
-    {
-        if (!Auth::guard('admin')->check()) {
-            return redirect()->route('login.admin')->withErrors('Debes iniciar sesión para acceder');;
-        }
-        $articulos = DB::select("SELECT `articulos`.* FROM `articulos` where `articulos`.`estadoArticulo`!=0");
-        return view('admin.articulos')->with('articulos', $articulos);;
-    }
-    public function articulosGet(){
-        $articulos = DB::select("SELECT `articulos`.* FROM `articulos` where `articulos`.`estadoArticulo`!=0");
-        for ($i = 0; $i < count($articulos); $i++) {
-            if ($articulos[$i]->photoArticulo) {
-                $articulos[$i]->photoArticulo = asset('store/' . $articulos[$i]->photoArticulo);
-            }
-        }
-        $length = count($articulos);
-        return [$articulos,$length];
-    }
-    public function articulosTallaShow()
-    {
-        if (!Auth::guard('admin')->check()) {
-            return redirect()->route('login.admin')->withErrors('Debes iniciar sesión para acceder');;
-        }
-        $articulos = DB::select("SELECT articulos.idArticulo, articulos.estadoArticulo, articulos.nombreArticulo, articulos.categoriaArticulo,(select COUNT(*) from articulo_tallas where articulo_tallas.idArticuloS=articulos.idArticulo and articulo_tallas.estadoArticuloTalla!=0) 
-        as cant from articulos where articulos.estadoArticulo!=0  order by articulos.idArticulo ASC");
-        $articuloTallas = DB::select("SELECT `articulo_tallas`.`idArticuloTalla`, `articulo_tallas`.`idArticuloS`, `articulo_tallas`.`idTallaS`, `articulo_tallas`.`stockArticulo`, `tallas`.`nombreTalla`
-        FROM `articulo_tallas` LEFT JOIN `tallas` ON `articulo_tallas`.`idTallaS` = `tallas`.`idTalla` where 
-        `articulo_tallas`.`estadoArticuloTalla`!=0");
-        return view('admin.articulotalla')->with([
-            'articulos' => $articulos,
-            'articuloTallas' => $articuloTallas
-        ]);
     }
 }

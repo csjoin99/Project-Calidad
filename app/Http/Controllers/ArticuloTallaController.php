@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\articulo_talla;
 use ArrayObject;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ArticuloTallaController extends Controller
@@ -131,7 +133,13 @@ class ArticuloTallaController extends Controller
             return response()->json(['success' => false,'message'=>'No se pudo eliminar la talla']);
         }
     }
-
+    public function articulostallaShow()
+    {
+        if (!Auth::guard('admin')->check()) {
+            return redirect()->route('login.admin')->withErrors('Debes iniciar sesión para acceder');;
+        }
+        return view('admin.articulotalla');
+    }
     public function getTallaArticulo(Request $request, $id)
     {
         $tallas = DB::select("select * from (select * from (select idTalla, nombreTalla, categoriaTalla from tallas) as a 
@@ -141,7 +149,7 @@ class ArticuloTallaController extends Controller
 
         return response()->json(['talla' => $tallas]);
     }
-    public function articulosTallaGet()
+    public function articulosTallaGet(Request $request)
     {
         $articulos = DB::select("SELECT articulos.idArticulo, articulos.estadoArticulo, articulos.nombreArticulo, articulos.categoriaArticulo,(select COUNT(*) from articulo_tallas where articulo_tallas.idArticuloS=articulos.idArticulo and articulo_tallas.estadoArticuloTalla!=0) 
         as cant from articulos where articulos.estadoArticulo!=0  order by articulos.idArticulo ASC");
@@ -149,7 +157,6 @@ class ArticuloTallaController extends Controller
         $articuloTallas = DB::select("SELECT `articulo_tallas`.`idArticuloTalla`, `articulo_tallas`.`idArticuloS`, `articulo_tallas`.`idTallaS`, `articulo_tallas`.`stockArticulo`, `tallas`.`nombreTalla`
         FROM `articulo_tallas` LEFT JOIN `tallas` ON `articulo_tallas`.`idTallaS` = `tallas`.`idTalla` where 
         `articulo_tallas`.`estadoArticuloTalla`!=0");
-        /*  */
         for ($i = 0; $i < $articuloscant; $i++) {
             $arrayTallas = array();
             for ($j = 0; $j < count($articuloTallas); $j++) {
@@ -158,8 +165,16 @@ class ArticuloTallaController extends Controller
                 }
             }
             $articulos[$i]->arrayTalla=$arrayTallas;
-            /* array_push($articulos[$i],(object)$arrayTallas); */
         }
-        return ['articulos' => $articulos, 'articuloscant' => $articuloscant];
+        $page = ($request->page)?$request->page:1;
+        $perPage = 6; 
+        $offset = ($page * $perPage) - $perPage;
+        $paginate = new LengthAwarePaginator(
+            array_slice($articulos,$offset,$perPage, true),
+            $articuloscant,
+            $perPage,
+            $page
+        );
+        return ['pagination' => $paginate, 'articuloscant' => $articuloscant];
     }
 }

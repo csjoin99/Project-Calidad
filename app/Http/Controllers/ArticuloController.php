@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\articulo;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ArticuloController extends Controller
@@ -34,6 +37,34 @@ class ArticuloController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function articulosShow()
+    {
+        if (!Auth::guard('admin')->check()) {
+            return redirect()->route('login.admin')->withErrors('Debes iniciar sesión para acceder');;
+        }
+        return view('admin.articulos');
+    }
+    public function articulosGet(Request $request){ 
+        $articulos = articulo::where('estadoArticulo','!=',0)->get();
+        for ($i = 0; $i < count($articulos); $i++) {
+            if ($articulos[$i]->photoArticulo) {
+                $articulos[$i]->photoArticulo = asset('store/' . $articulos[$i]->photoArticulo);
+            }
+        }
+        $length = count($articulos);
+        $page = ($request->page)?$request->page:1;
+        $perPage = 6; 
+        $offset = ($page * $perPage) - $perPage;
+        $paginate = new LengthAwarePaginator(
+            array_slice($articulos->toArray(),$offset,$perPage, true),
+            $length,
+            $perPage,
+            $page
+        );
+        return [
+            'pagination'=>$paginate,
+            'length'=>$length,];
+    }
     public function store(Request $request)
     {
         try {
