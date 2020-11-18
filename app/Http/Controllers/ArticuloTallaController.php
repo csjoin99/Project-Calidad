@@ -167,7 +167,7 @@ class ArticuloTallaController extends Controller
             $articulos[$i]->arrayTalla=$arrayTallas;
         }
         $page = ($request->page)?$request->page:1;
-        $perPage = 1; 
+        $perPage = 5; 
         $offset = ($page * $perPage) - $perPage;
         $paginate = new LengthAwarePaginator(
             array_slice($articulos,$offset,$perPage, true),
