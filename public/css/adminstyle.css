@@ -1,0 +1,23 @@
+.pagination a {
+    border: none;
+    color: #2F3640;
+    font-weight: bold;
+}
+
+.pagination a:hover {
+    border: none;
+    color: #2F3640;
+    font-weight: bold;
+}
+
+.pagination .active .page-link {
+    background-color: #343A40;
+    border-color: #343A40;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 0px;
+}
+
+.pagination .next svg {
+    transform: rotate(180deg);
+}
