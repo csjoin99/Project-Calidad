@@ -19341,10 +19341,17 @@ var _require2 = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.
 var vm = new Vue({
   el: '#articulosadmin',
   data: function data() {
-    return _defineProperty({
+    var _ref;
+
+    return _ref = {
       articulos: [],
       message: '',
       cant: 0,
+      pagination: {
+        total: 0,
+        perpage: 0
+      },
+      lastpage: '',
       articulo: {
         idArticulo: "",
         nombreArticulo: "",
@@ -19367,19 +19374,28 @@ var vm = new Vue({
       tempimg: '',
       iddelete: '',
       success: ''
-    }, "message", '');
+    }, _defineProperty(_ref, "message", ''), _defineProperty(_ref, "isActivated", ''), _defineProperty(_ref, "pagesNumber", ''), _ref;
   },
   created: function created() {
-    Axios.get('/admin/articulosget').then(function (response) {
-      vm.articulos = response.data[0];
-      vm.cant = response.data[1];
+    Axios.get('/admin/articulos/get').then(function (response) {
+      vm.cant = response.data.length;
+      vm.pagination = response.data.pagination;
+      vm.articulos = vm.pagination.data;
+      vm.lastpage = vm.pagination.last_page;
+      vm.pagesNumber = vm.checkpagesNumber();
+      vm.isActivated = vm.checkisActivated();
     });
   },
+  computed: {},
   methods: {
-    obtener: function obtener() {
-      Axios.get('/admin/articulosget').then(function (response) {
-        vm.articulos = response.data[0];
-        vm.cant = response.data[1];
+    obtener: function obtener(page) {
+      Axios.get("/admin/articulos/get?page=".concat(page)).then(function (response) {
+        vm.cant = response.data.length;
+        vm.pagination = response.data.pagination;
+        vm.articulos = vm.pagination.data;
+        vm.lastpage = vm.pagination.last_page;
+        vm.pagesNumber = vm.checkpagesNumber();
+        vm.isActivated = vm.checkisActivated();
         vm.componentKey++;
       });
     },
@@ -19402,11 +19418,11 @@ var vm = new Vue({
         precioArticulo: vm.articulo.precioArticulo,
         photoArticulo: vm.tempimg
       }).then(function (response) {
-        vm.obtener();
+        vm.obtener(vm.pagination.current_page);
         vm.success = response.data.success;
         vm.message = response.data.message;
       })["catch"](function (error) {
-        vm.obtener();
+        vm.obtener(vm.pagination.current_page);
       });
     },
     añadirShow: function aAdirShow() {
@@ -19428,11 +19444,11 @@ var vm = new Vue({
         generoArticulo: vm.newarticulo.generoArticulo,
         photoArticulo: vm.tempimg
       }).then(function (response) {
-        vm.obtener();
+        vm.obtener(vm.pagination.current_page);
         vm.success = response.data.success;
         vm.message = response.data.message;
       })["catch"](function (error) {
-        vm.obtener();
+        vm.obtener(vm.pagination.current_page);
       });
     },
     deleteShow: function deleteShow(id) {
@@ -19442,11 +19458,11 @@ var vm = new Vue({
     eliminar: function eliminar(id) {
       $('#deleteEmployeeModal').modal('hide');
       Axios.post("/admin/articulos/destroy/".concat(vm.iddelete)).then(function (response) {
-        vm.obtener();
+        vm.obtener(vm.pagination.current_page);
         vm.success = response.data.success;
         vm.message = response.data.message;
       })["catch"](function (error) {
-        vm.obtener();
+        vm.obtener(vm.pagination.current_page);
       });
     },
     imageChange: function imageChange(e) {
@@ -19456,6 +19472,39 @@ var vm = new Vue({
       reader.onload = function (e) {
         vm.tempimg = e.target.result;
       };
+    },
+    changePage: function changePage(page) {
+      vm.pagination.current_page = page;
+      vm.obtener(page);
+    },
+    checkisActivated: function checkisActivated() {
+      return vm.pagination.current_page;
+    },
+    checkpagesNumber: function checkpagesNumber() {
+      if (!vm.pagination.to) {
+        return [];
+      }
+
+      var from = vm.pagination.current_page - 2;
+
+      if (from < 1) {
+        from = 1;
+      }
+
+      var to = from + 2;
+
+      if (to >= vm.lastpage) {
+        to = vm.lastpage;
+      }
+
+      var pagesArray = [];
+
+      while (from <= to) {
+        pagesArray.push(from);
+        from++;
+      }
+
+      return pagesArray;
     }
   }
 });

@@ -19347,6 +19347,7 @@ var vm = new Vue({
       articulos: [],
       message: '',
       articuloscant: 0,
+      pagination: '',
       talla: {
         id: "",
         talla: "",
@@ -19362,19 +19363,27 @@ var vm = new Vue({
       componentKey: 0,
       iddelete: '',
       success: ''
-    }, _defineProperty(_ref, "message", ''), _defineProperty(_ref, "tallasArticulo", ''), _ref;
+    }, _defineProperty(_ref, "message", ''), _defineProperty(_ref, "tallasArticulo", ''), _defineProperty(_ref, "isActivated", ''), _defineProperty(_ref, "pagesNumber", ''), _defineProperty(_ref, "lastpage", ''), _ref;
   },
   created: function created() {
     Axios.get('/admin/articulostalla/get').then(function (response) {
-      vm.articulos = response.data.articulos;
       vm.articuloscant = response.data.articuloscant;
+      vm.pagination = response.data.pagination;
+      vm.articulos = vm.pagination.data;
+      vm.lastpage = vm.pagination.last_page;
+      vm.pagesNumber = vm.checkpagesNumber();
+      vm.isActivated = vm.checkisActivated();
     });
   },
   methods: {
-    obtener: function obtener() {
-      Axios.get('/admin/articulostalla/get').then(function (response) {
-        vm.articulos = response.data.articulos;
+    obtener: function obtener(page) {
+      Axios.get("/admin/articulostalla/get?page=".concat(page)).then(function (response) {
         vm.articuloscant = response.data.articuloscant;
+        vm.pagination = response.data.pagination;
+        vm.articulos = vm.pagination.data;
+        vm.lastpage = vm.pagination.last_page;
+        vm.pagesNumber = vm.checkpagesNumber();
+        vm.isActivated = vm.checkisActivated();
         vm.componentKey++;
       });
     },
@@ -19391,11 +19400,11 @@ var vm = new Vue({
         idArticulo: datos.id,
         stockArticulo: datos.stock
       }).then(function (response) {
-        vm.obtener();
+        vm.obtener(vm.pagination.current_page);
         vm.success = response.data.success;
         vm.message = response.data.message;
       })["catch"](function (error) {
-        vm.obtener();
+        vm.obtener(vm.pagination.current_page);
       });
     },
     añadirShow: function aAdirShow(articulo) {
@@ -19421,9 +19430,9 @@ var vm = new Vue({
       }).then(function (response) {
         vm.success = response.data.success;
         vm.message = response.data.message;
-        vm.obtener();
+        vm.obtener(vm.pagination.current_page);
       })["catch"](function (error) {
-        vm.obtener();
+        vm.obtener(vm.pagination.current_page);
       });
     },
     deleteShow: function deleteShow(dato) {
@@ -19434,12 +19443,45 @@ var vm = new Vue({
       $('#deleteEmployeeModal').modal('hide');
       Axios.post("/admin/articulostalla/destroy/".concat(dato)).then(function (response) {
         console.log(response);
-        vm.obtener();
+        vm.obtener(vm.pagination.current_page);
         vm.success = response.data.success;
         vm.message = response.data.message;
       })["catch"](function (error) {
-        vm.obtener();
+        vm.obtener(vm.pagination.current_page);
       });
+    },
+    changePage: function changePage(page) {
+      vm.pagination.current_page = page;
+      vm.obtener(page);
+    },
+    checkisActivated: function checkisActivated() {
+      return vm.pagination.current_page;
+    },
+    checkpagesNumber: function checkpagesNumber() {
+      if (!vm.pagination.to) {
+        return [];
+      }
+
+      var from = vm.pagination.current_page - 2;
+
+      if (from < 1) {
+        from = 1;
+      }
+
+      var to = from + 2;
+
+      if (to >= vm.lastpage) {
+        to = vm.lastpage;
+      }
+
+      var pagesArray = [];
+
+      while (from <= to) {
+        pagesArray.push(from);
+        from++;
+      }
+
+      return pagesArray;
     }
   }
 });
