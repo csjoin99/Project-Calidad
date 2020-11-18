@@ -19344,6 +19344,7 @@ var vm = new Vue({
     var _ref;
 
     return _ref = {
+      init: '',
       articulos: [],
       message: '',
       cant: 0,
@@ -19384,6 +19385,7 @@ var vm = new Vue({
       vm.lastpage = vm.pagination.last_page;
       vm.pagesNumber = vm.checkpagesNumber();
       vm.isActivated = vm.checkisActivated();
+      vm.init = 1;
     });
   },
   computed: {},

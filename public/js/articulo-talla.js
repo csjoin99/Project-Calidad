@@ -19363,7 +19363,7 @@ var vm = new Vue({
       componentKey: 0,
       iddelete: '',
       success: ''
-    }, _defineProperty(_ref, "message", ''), _defineProperty(_ref, "tallasArticulo", ''), _defineProperty(_ref, "isActivated", ''), _defineProperty(_ref, "pagesNumber", ''), _defineProperty(_ref, "lastpage", ''), _ref;
+    }, _defineProperty(_ref, "message", ''), _defineProperty(_ref, "tallasArticulo", ''), _defineProperty(_ref, "isActivated", ''), _defineProperty(_ref, "pagesNumber", ''), _defineProperty(_ref, "lastpage", ''), _defineProperty(_ref, "init", ''), _ref;
   },
   created: function created() {
     Axios.get('/admin/articulostalla/get').then(function (response) {
@@ -19373,6 +19373,7 @@ var vm = new Vue({
       vm.lastpage = vm.pagination.last_page;
       vm.pagesNumber = vm.checkpagesNumber();
       vm.isActivated = vm.checkisActivated();
+      vm.init = 1;
     });
   },
   methods: {
