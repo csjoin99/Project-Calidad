@@ -1,7 +1,7 @@
 @extends('layouts.admindashboard')
 @section('content')
     <div id='articulos_talla_admin'>
-        <div :key="componentKey" class="content-wrapper">
+        <div :key="componentKey" class="content-wrapper d-none" v-bind:class="[init == 1 ? 'd-block' :  'd-none']">
             <div class="content-header">
                 <div class="container-fluid">
                     <div class="row mb-2">
@@ -97,6 +97,7 @@
                             </table>
                                 </tbody>
                             </table>
+                            <br>
                             <nav aria-label="Page navigation example" class="d-flex justify-content-center">
                                 <ul class="pagination">
                                   <li class="page-item" v-if="pagination.current_page >1">

@@ -1,10 +1,9 @@
 @extends('layouts.admindashboard')
 @section('content')
-    <div id="articulosadmin" class="content-wrapper">
-        <div :key="componentKey">
+    <div id="articulosadmin">
+        <div :key="componentKey" class="d-none" v-bind:class="[init==1 ? 'content-wrapper d-block' : 'content-wrapper d-none']">
             <div class="content-header container">
                 <div class="container-fluid">
-
                     <div class="row mb-2">
                         <div class="col-sm-6">
                             <h1 class="m-0 text-dark">Artículos</h1>
@@ -84,6 +83,7 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <br>
                             <nav aria-label="Page navigation example" class="d-flex justify-content-center">
                                 <ul class="pagination">
                                   <li class="page-item" v-if="pagination.current_page >1">
