@@ -19463,13 +19463,12 @@ var vm = new Vue({
         return [];
       }
 
-      var from = vm.pagination.current_page - 2;
+      var from = vm.pagination.current_page - 3;
+      var to = vm.pagination.current_page + 3;
 
       if (from < 1) {
         from = 1;
       }
-
-      var to = from + 2;
 
       if (to >= vm.lastpage) {
         to = vm.lastpage;

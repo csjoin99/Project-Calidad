@@ -49,6 +49,7 @@ const vm = new Vue({
             vm.pagesNumber = vm.checkpagesNumber()
             vm.isActivated = vm.checkisActivated()
             vm.init = 1
+            console.log(vm.pagesNumber)
         })
     },
     computed: {
@@ -63,6 +64,8 @@ const vm = new Vue({
                 vm.lastpage = vm.pagination.last_page
                 vm.pagesNumber = vm.checkpagesNumber()
                 vm.isActivated = vm.checkisActivated()
+                console.log(vm.pagesNumber)
+                console.log(vm.pagination)
                 vm.componentKey++
             })
         },
@@ -156,11 +159,11 @@ const vm = new Vue({
             if (!vm.pagination.to) {
                 return []
             }
-            var from = vm.pagination.current_page - 2
+            var from = vm.pagination.current_page - 3
+            var to = vm.pagination.current_page + 3
             if (from < 1) {
                 from = 1
             }
-            var to = from + 2
             if (to >= vm.lastpage) {
                 to = vm.lastpage
             }
