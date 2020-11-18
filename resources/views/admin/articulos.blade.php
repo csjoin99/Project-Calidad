@@ -1,7 +1,8 @@
 @extends('layouts.admindashboard')
 @section('content')
     <div id="articulosadmin">
-        <div :key="componentKey" class="d-none" v-bind:class="[init==1 ? 'content-wrapper d-block' : 'content-wrapper d-none']">
+        <div :key="componentKey" class="d-none"
+            v-bind:class="[init==1 ? 'content-wrapper d-block' : 'content-wrapper d-none']">
             <div class="content-header container">
                 <div class="container-fluid">
                     <div class="row mb-2">
@@ -86,21 +87,37 @@
                             <br>
                             <nav aria-label="Page navigation example" class="d-flex justify-content-center">
                                 <ul class="pagination">
-                                  <li class="page-item" v-if="pagination.current_page >1">
-                                    <a class="page-link" href="#" aria-label="Previous" v-on:click.prevent="changePage(pagination.current_page-1)">
-                                      <span aria-hidden="true">&laquo;</span>
-                                      <span class="sr-only">Previous</span>
-                                    </a>
-                                  </li>
-                                  <li v-for="page in pagesNumber" v-bind:class="[page == isActivated ? 'page-item active' : 'page-item']">
-                                    <a class="page-link" href="#" v-text="page" v-on:click.prevent="changePage(page)"></a>
-                                  </li>
-                                  <li class="page-item"  v-if="pagination.current_page < lastpage">
-                                    <a class="page-link" href="#" aria-label="Next" v-on:click.prevent="changePage(pagination.current_page+1)">
-                                      <span aria-hidden="true">&raquo;</span>
-                                      <span class="sr-only">Next</span>
-                                    </a>
-                                  </li>
+                                    <li class="page-item" v-if="pagination.current_page >1">
+                                        <a class="page-link" href="#" aria-label="Previous"
+                                            v-on:click.prevent="changePage(pagination.current_page-1)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="8" height="12"
+                                                viewBox="0 0 8 12">
+                                                <g fill="none" fill-rule="evenodd">
+                                                    <path fill="#33313C" d="M7.41 1.41L6 0 0 6l6 6 1.41-1.41L2.83 6z">
+                                                    </path>
+                                                </g>
+                                            </svg>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                    </li>
+                                    <li v-for="page in pagesNumber"
+                                        v-bind:class="[page == isActivated ? 'page-item active' : 'page-item']">
+                                        <a class="page-link" href="#" v-text="page"
+                                            v-on:click.prevent="changePage(page)"></a>
+                                    </li>
+                                    <li class="page-item" v-if="pagination.current_page < lastpage">
+                                        <a class="page-link next" href="#" aria-label="Next"
+                                            v-on:click.prevent="changePage(pagination.current_page+1)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="8" height="12"
+                                                viewBox="0 0 8 12">
+                                                <g fill="none" fill-rule="evenodd">
+                                                    <path fill="#33313C" d="M7.41 1.41L6 0 0 6l6 6 1.41-1.41L2.83 6z">
+                                                    </path>
+                                                </g>
+                                            </svg>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </li>
                                 </ul>
                             </nav>
                         </div>
