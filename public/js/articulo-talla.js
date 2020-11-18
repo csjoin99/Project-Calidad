@@ -19392,7 +19392,6 @@ var vm = new Vue({
       vm.talla.id = datos.idArticuloTalla;
       vm.talla.talla = datos.nombreTalla;
       vm.talla.stock = datos.stockArticulo;
-      console.log(vm.talla);
       $('#editEmployeeModal').modal('show');
     },
     modificar: function modificar(datos) {
@@ -19417,9 +19416,7 @@ var vm = new Vue({
         category: articulo.categoriaArticulo
       }).then(function (response) {
         vm.tallasArticulo = response.data.talla;
-      })["catch"](function (error) {
-        console.log(error);
-      });
+      })["catch"](function (error) {});
       $('#addEmployeeModal').modal('show');
     },
     añadir: function aAdir(tallanew) {
@@ -19443,7 +19440,6 @@ var vm = new Vue({
     eliminar: function eliminar(dato) {
       $('#deleteEmployeeModal').modal('hide');
       Axios.post("/admin/articulostalla/destroy/".concat(dato)).then(function (response) {
-        console.log(response);
         vm.obtener(vm.pagination.current_page);
         vm.success = response.data.success;
         vm.message = response.data.message;
@@ -19453,6 +19449,7 @@ var vm = new Vue({
     },
     changePage: function changePage(page) {
       vm.pagination.current_page = page;
+      vm.message = '';
       vm.obtener(page);
     },
     checkisActivated: function checkisActivated() {
