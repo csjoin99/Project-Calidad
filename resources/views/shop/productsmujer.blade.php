@@ -17,8 +17,8 @@
                     <div  v-for="articulo in articulos" class="col-lg-4 col-md-6 mb-4">
                         <div class="card h-100">
                             <a class="border-bottom" v-bind:href="'/product/'+ articulo.nombreArticulo">
-                                    <img v-if="articulo.photoArticulo" class="card-img-top" v-bind:src="articulo.photoArticulo" :alt="articulo.nombreArticulo">       
-                                    <img v-else class="card-img-top" src="{{asset('store/no-image.jpg')}}" :alt="articulo.nombreArticulo"> 
+                                    <img style="height: 250px;object-fit: cover" v-if="articulo.photoArticulo" class="card-img-top" v-bind:src="articulo.photoArticulo" :alt="articulo.nombreArticulo">       
+                                    <img style="height: 250px;object-fit: cover" v-else class="card-img-top" src="{{asset('store/no-image.jpg')}}" :alt="articulo.nombreArticulo"> 
                             </a>
                             <div class="card-body">
                                 <h4 class="card-title">
