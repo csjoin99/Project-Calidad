@@ -15,67 +15,57 @@
 </head>
 
 <body>
-    <nav>
-        <div class="nav-bar">
-            <a href="{{ route('main') }}"><img
-                    src="{{ asset('images/logo.png') }}"></a>
-            <ul class="nav-options">
-                <li>
-                    <a href="{{ route('shop.products','hombres') }}">Hombre</a>
+    <nav class="navbar navbar-expand-sm  nav-bar">
+        <a class="navbar-brand" href="{{ route('main') }}"><img src="{{ asset('images/logo.png') }}"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"><i class="fas fa-bars"></i></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <ul class="navbar-nav w-100 d-flex justify-content-between pl-5 pr-5">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('shop.products', 'hombres') }}">Hombre</a>
                 </li>
-                <li>
-                    <a href="{{ route('shop.products','mujeres') }}">Mujer</a>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('shop.products', 'mujeres') }}">Mujeres</a>
                 </li>
-                <li>
-                    <a
-                        href="{{ route('shop.cart') }}">Carrito</a>
-                    @if (Cart::count() > 0)
-                        <span class="cart-count">
-                            @if (Cart::count() < 10)
-                                <span> {{ Cart::count() }} </span>
-                                @else
-                                <span>9+</span>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('shop.cart') }}">
+                        Carrito
+                        <span>
+                            @if (Cart::count() > 0)
+                                <span class="cart-count">
+                                    @if (Cart::count() < 10)
+                                        <span> {{ Cart::count() }} </span>
+                                    @else
+                                        <span>9+</span>
+                                    @endif
+                                </span>
                             @endif
-
                         </span>
-                    @endif
+                    </a>
                 </li>
-                <li>
-                    <a href="#">Contactenos</a>
-
-                </li>
-            </ul>
-            <ul class="nav-login">
                 @guest
-
-
-                    <li>
-                        <a href="{{ route('login') }}">Iniciar sesión</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('login') }}">Iniciar sesión</a>
                     </li>
-                    <li>
-                        <a href="{{ route('register') }}">Registrarse</a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('register') }}">Registrarse</a>
                     </li>
                 @else
-
-                    <li style="width: 180px" class="nav-item dropdown">
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
                             {{ Auth::user()->firstname }}
                         </a>
-
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown"
-                            style="background-color: #4B4A4C">
+                        <div class="dropdown-menu">
                             <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                         document.getElementById('logout-form').submit();">
+                                        document.getElementById('logout-form').submit();">
                                 Log out
                             </a>
-
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf
                             </form>
                         </div>
                     </li>
-
                 @endguest
             </ul>
         </div>
