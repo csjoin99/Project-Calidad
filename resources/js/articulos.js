@@ -7,6 +7,11 @@ const vm = new Vue({
             articulos: [],
             message: '',
             cant: 0,
+            pagination: {
+                total: 0,
+                perpage: 0,
+            },
+            lastpage: '',
             articulo: {
                 idArticulo: "",
                 nombreArticulo: "",
@@ -29,20 +34,33 @@ const vm = new Vue({
             tempimg: '',
             iddelete: '',
             success: '',
-            message: ''
+            message: '',
+            isActivated: '',
+            pagesNumber: ''
         };
     },
     created() {
-        Axios.get('/admin/articulosget').then(response => {
-            vm.articulos = response.data[0]
-            vm.cant = response.data[1]
+        Axios.get('/admin/articulos/get').then(response => {
+            vm.cant = response.data.length
+            vm.pagination = response.data.pagination
+            vm.articulos = vm.pagination.data
+            vm.lastpage = vm.pagination.last_page
+            vm.pagesNumber = vm.checkpagesNumber()
+            vm.isActivated = vm.checkisActivated()
         })
     },
+    computed: {
+
+    },
     methods: {
-        obtener: () => {
-            Axios.get('/admin/articulosget').then(response => {
-                vm.articulos = response.data[0]
-                vm.cant = response.data[1]
+        obtener: (page) => {
+            Axios.get(`/admin/articulos/get?page=${page}`).then(response => {
+                vm.cant = response.data.length
+                vm.pagination = response.data.pagination
+                vm.articulos = vm.pagination.data
+                vm.lastpage = vm.pagination.last_page
+                vm.pagesNumber = vm.checkpagesNumber()
+                vm.isActivated = vm.checkisActivated()
                 vm.componentKey++
             })
         },
@@ -66,12 +84,12 @@ const vm = new Vue({
                     photoArticulo: vm.tempimg
                 })
                 .then(function(response) {
-                    vm.obtener()
+                    vm.obtener(vm.pagination.current_page)
                     vm.success = response.data.success
                     vm.message = response.data.message
                 })
                 .catch(function(error) {
-                    vm.obtener()
+                    vm.obtener(vm.pagination.current_page)
                 });
         },
         añadirShow: () => {
@@ -94,12 +112,12 @@ const vm = new Vue({
                     photoArticulo: vm.tempimg
                 })
                 .then(function(response) {
-                    vm.obtener()
+                    vm.obtener(vm.pagination.current_page)
                     vm.success = response.data.success
                     vm.message = response.data.message
                 })
                 .catch(function(error) {
-                    vm.obtener()
+                    vm.obtener(vm.pagination.current_page)
                 });
         },
         deleteShow: (id) => {
@@ -110,12 +128,12 @@ const vm = new Vue({
             $('#deleteEmployeeModal').modal('hide')
             Axios.post(`/admin/articulos/destroy/${vm.iddelete}`)
                 .then(function(response) {
-                    vm.obtener()
+                    vm.obtener(vm.pagination.current_page)
                     vm.success = response.data.success
                     vm.message = response.data.message
                 })
                 .catch(function(error) {
-                    vm.obtener()
+                    vm.obtener(vm.pagination.current_page)
                 });
         },
         imageChange: (e) => {
@@ -124,6 +142,32 @@ const vm = new Vue({
             reader.onload = (e) => {
                 vm.tempimg = e.target.result
             }
+        },
+        changePage: (page) => {
+            vm.pagination.current_page = page
+            vm.obtener(page)
+        },
+        checkisActivated: () => {
+            return vm.pagination.current_page
+        },
+        checkpagesNumber: () => {
+            if (!vm.pagination.to) {
+                return []
+            }
+            var from = vm.pagination.current_page - 2
+            if (from < 1) {
+                from = 1
+            }
+            var to = from + 2
+            if (to >= vm.lastpage) {
+                to = vm.lastpage
+            }
+            var pagesArray = []
+            while (from <= to) {
+                pagesArray.push(from)
+                from++
+            }
+            return pagesArray
         }
     }
 })

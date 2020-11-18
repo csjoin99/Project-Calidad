@@ -7,6 +7,7 @@ const vm = new Vue({
             articulos: [],
             message: '',
             articuloscant: 0,
+            pagination: '',
             talla: {
                 id: "",
                 talla: "",
@@ -24,20 +25,30 @@ const vm = new Vue({
             success: '',
             message: '',
             tallasArticulo: '',
-
+            isActivated: '',
+            pagesNumber: '',
+            lastpage: ''
         };
     },
     created() {
         Axios.get('/admin/articulostalla/get').then(response => {
-            vm.articulos = response.data.articulos
             vm.articuloscant = response.data.articuloscant
+            vm.pagination = response.data.pagination
+            vm.articulos = vm.pagination.data
+            vm.lastpage = vm.pagination.last_page
+            vm.pagesNumber = vm.checkpagesNumber()
+            vm.isActivated = vm.checkisActivated()
         })
     },
     methods: {
-        obtener: () => {
-            Axios.get('/admin/articulostalla/get').then(response => {
-                vm.articulos = response.data.articulos
+        obtener: (page) => {
+            Axios.get(`/admin/articulostalla/get?page=${page}`).then(response => {
                 vm.articuloscant = response.data.articuloscant
+                vm.pagination = response.data.pagination
+                vm.articulos = vm.pagination.data
+                vm.lastpage = vm.pagination.last_page
+                vm.pagesNumber = vm.checkpagesNumber()
+                vm.isActivated = vm.checkisActivated()
                 vm.componentKey++
             })
         },
@@ -56,12 +67,12 @@ const vm = new Vue({
                     stockArticulo: datos.stock,
                 })
                 .then(function(response) {
-                    vm.obtener()
+                    vm.obtener(vm.pagination.current_page)
                     vm.success = response.data.success
                     vm.message = response.data.message
                 })
                 .catch(function(error) {
-                    vm.obtener()
+                    vm.obtener(vm.pagination.current_page)
                 });
         },
         añadirShow: (articulo) => {
@@ -91,10 +102,10 @@ const vm = new Vue({
                 .then(function(response) {
                     vm.success = response.data.success
                     vm.message = response.data.message
-                    vm.obtener()
+                    vm.obtener(vm.pagination.current_page)
                 })
                 .catch(function(error) {
-                    vm.obtener()
+                    vm.obtener(vm.pagination.current_page)
                 });
         },
 
@@ -107,13 +118,39 @@ const vm = new Vue({
             Axios.post(`/admin/articulostalla/destroy/${dato}`)
                 .then(function(response) {
                     console.log(response)
-                    vm.obtener()
+                    vm.obtener(vm.pagination.current_page)
                     vm.success = response.data.success
                     vm.message = response.data.message
                 })
                 .catch(function(error) {
-                    vm.obtener()
+                    vm.obtener(vm.pagination.current_page)
                 });
+        },
+        changePage: (page) => {
+            vm.pagination.current_page = page
+            vm.obtener(page)
+        },
+        checkisActivated: () => {
+            return vm.pagination.current_page
+        },
+        checkpagesNumber: () => {
+            if (!vm.pagination.to) {
+                return []
+            }
+            var from = vm.pagination.current_page - 2
+            if (from < 1) {
+                from = 1
+            }
+            var to = from + 2
+            if (to >= vm.lastpage) {
+                to = vm.lastpage
+            }
+            var pagesArray = []
+            while (from <= to) {
+                pagesArray.push(from)
+                from++
+            }
+            return pagesArray
         }
     }
 })
