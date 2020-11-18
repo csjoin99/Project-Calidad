@@ -53,7 +53,7 @@ class ArticuloController extends Controller
         }
         $length = count($articulos);
         $page = ($request->page)?$request->page:1;
-        $perPage = 6; 
+        $perPage = 5; 
         $offset = ($page * $perPage) - $perPage;
         $paginate = new LengthAwarePaginator(
             array_slice($articulos->toArray(),$offset,$perPage, true),
