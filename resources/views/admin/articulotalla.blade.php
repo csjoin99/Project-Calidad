@@ -97,6 +97,25 @@
                             </table>
                                 </tbody>
                             </table>
+                            <nav aria-label="Page navigation example" class="d-flex justify-content-center">
+                                <ul class="pagination">
+                                  <li class="page-item" v-if="pagination.current_page >1">
+                                    <a class="page-link" href="#" aria-label="Previous" v-on:click.prevent="changePage(pagination.current_page-1)">
+                                      <span aria-hidden="true">&laquo;</span>
+                                      <span class="sr-only">Previous</span>
+                                    </a>
+                                  </li>
+                                  <li v-for="page in pagesNumber" v-bind:class="[page == isActivated ? 'page-item active' : 'page-item']">
+                                    <a class="page-link" href="#" v-text="page" v-on:click.prevent="changePage(page)"></a>
+                                  </li>
+                                  <li class="page-item"  v-if="pagination.current_page < lastpage">
+                                    <a class="page-link" href="#" aria-label="Next" v-on:click.prevent="changePage(pagination.current_page+1)">
+                                      <span aria-hidden="true">&raquo;</span>
+                                      <span class="sr-only">Next</span>
+                                    </a>
+                                  </li>
+                                </ul>
+                            </nav>
                         </div>
                     </div>
                 </div>
