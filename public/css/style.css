@@ -9,12 +9,13 @@ body {
     background-color: #D8D7D9;
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
 }
 
 .nav-main {
     height: 100vh;
     margin: 0px;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("../images/fondo-header.jpg");
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../images/fondo-header.jpg");
     background-attachment: fixed;
     background-position: center center;
     background-size: cover;
@@ -23,66 +24,33 @@ body {
 
 .nav-bar {
     background-color: #4B4A4C;
-    height: 100px;
     min-height: 80px;
-    width: 100vw;
-    margin: 0px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 50px;
+}
+
+.nav-bar a {
+    color: #BEBDBF;
+    font-size: 1.2em;
+}
+
+.nav-bar a:hover {
+    color: #ffffff;
 }
 
 nav img {
-    height: 40px;
+    height: 100%;
+    max-height: 40px;
 }
 
-.nav-options {
-    list-style: none;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    padding: 0px;
+.nav-bar .dropdown-menu {
+    background-color: #4B4A4C;
 }
 
-.nav-options li {
-    font-size: 17px;
-    width: 120px;
-    text-align: center;
+.nav-bar .dropdown-menu a:hover {
+    background-color: #807D82;
 }
 
-.nav-options li a {
+.nav-bar i {
     color: #BEBDBF;
-    transition: 0.3s;
-}
-
-.nav-options li a:hover {
-    color: #ffffff;
-    text-decoration: none;
-}
-
-.nav-login {
-    list-style: none;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    padding: 0px;
-}
-
-.nav-login li {
-    font-size: 17px;
-    width: 120px;
-    text-align: center;
-}
-
-.nav-login li a {
-    color: #BEBDBF;
-    transition: 0.3s;
-}
-
-.nav-login li a:hover {
-    color: #ffffff;
-    text-decoration: none;
 }
 
 .nav-title {
@@ -92,6 +60,7 @@ nav img {
     align-items: center;
     color: white;
     font-size: 60px;
+    text-align: center;
 }
 
 .cart-count {
@@ -272,6 +241,8 @@ footer {
     height: fit-content;
     min-height: 150px;
     background-color: #4B4A4C;
+    position: relative;
+    margin-top: 45px;
 }
 
 .redes img {
@@ -297,4 +268,38 @@ footer {
     justify-content: center;
     align-items: center;
     padding: 0px 8px 0px 8px;
+}
+
+.btn-number button {
+    border-radius: 0px;
+    height: 100%;
+    background-color: #EEEEEE;
+    border-color: #EEEEEE;
+}
+
+.btn-number input {
+    border-color: #EEEEEE;
+    max-width: 100px;
+    min-width: 80px;
+}
+
+@media only screen and (max-width: 435px) {
+    nav img {
+        height: 100%;
+        max-height: 30px;
+    }
+}
+
+@media only screen and (max-width: 355px) {
+    nav img {
+        height: 100%;
+        max-height: 25px;
+    }
+}
+
+@media only screen and (max-width: 315px) {
+    nav img {
+        height: 100%;
+        max-height: 20px;
+    }
 }
