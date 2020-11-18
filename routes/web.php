@@ -26,9 +26,9 @@ Route::get('/admin', [App\Http\Controllers\AdminController::class, 'index'] )->n
 //Users
 Route::get('/admin/users', [App\Http\Controllers\AdminController::class, 'usuariosShow'] )->name('admin.users');
 //Articulos show
-Route::get('/admin/articulos', [App\Http\Controllers\AdminController::class, 'articulosShow'] )->name('admin.articulos');
+Route::get('/admin/articulos', [App\Http\Controllers\ArticuloController::class, 'articulosShow'] )->name('admin.articulos');
 //Articulos obtener datos
-Route::get('/admin/articulosget', [App\Http\Controllers\AdminController::class, 'articulosGet'] )->name('admin.get.articulos');
+Route::get('/admin/articulos/get', [App\Http\Controllers\ArticuloController::class, 'articulosGet'] )->name('admin.get.articulos');
 //Articulos insert
 Route::post('/admin/articulos/store', [App\Http\Controllers\ArticuloController::class, 'store'] )->name('admin.articulos.store');
 //Articulos edit
@@ -38,7 +38,7 @@ Route::post('/admin/articulos/destroy/{id}', [App\Http\Controllers\ArticuloContr
 //Login verificación
 Route::post('/admin/login', [App\Http\Controllers\Auth\LoginController::class, 'adminLogin'])->name('login.admin');
 //Articulo Talla
-Route::get('/admin/articulostalla', [App\Http\Controllers\AdminController::class, 'articulosTallaShow'] )->name('admin.articulotalla');
+Route::get('/admin/articulostalla', [App\Http\Controllers\ArticuloTallaController::class, 'articulostallaShow'] )->name('admin.articulotalla');
 //Articulos obtener datos
 Route::get('/admin/articulostalla/get', [App\Http\Controllers\ArticuloTallaController::class, 'articulosTallaGet'] )->name('admin.articulotalla.get');
 //Articulo talla obtener añadir
