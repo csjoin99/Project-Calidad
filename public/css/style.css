@@ -186,6 +186,7 @@ nav img {
     background-color: #CBCBCB;
     width: 100%;
     padding: 30px 0px 30px 0px;
+    margin-bottom: -50px;
 }
 
 .text-red {
@@ -282,6 +283,37 @@ footer {
     max-width: 100px;
     min-width: 80px;
 }
+
+.button-talla {
+    width: 51px;
+    height: 41px;
+    background-color: white;
+    text-align: center;
+    border: 1px solid #C6C6C6;
+    transition: 0.2s;
+    -webkit-appearance: none
+}
+
+.button-talla:hover:enabled {
+    color: white;
+    background-color: #4B4A4C;
+    border: 1px solid #4B4A4C;
+    outline: none;
+}
+
+.tactive {
+    color: white;
+    background-color: #4B4A4C;
+    border: 1px solid #4B4A4C;
+    outline: none;
+}
+
+
+/* 
+.button-talla:focus:enabled {
+    color: white;
+    background-color: black;
+} */
 
 @media only screen and (max-width: 435px) {
     nav img {

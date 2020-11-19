@@ -14,8 +14,16 @@ window.addEventListener("load", function() {
 
 for (let i = 0; i < buttonTalla.length; i++) {
     buttonTalla[i].addEventListener("click", function() {
+        QuitarClase()
+        this.classList.add('tactive')
         inputTallaArticulo.value = buttonTalla[i].id;
         inputTalla.value = buttonTalla[i].textContent;
         submitAddChart.disabled = false;
     });
+}
+
+function QuitarClase() {
+    for (let i = 0; i < buttonTalla.length; i++) {
+        buttonTalla[i].classList.remove('tactive')
+    }
 }

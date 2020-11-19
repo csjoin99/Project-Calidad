@@ -24,7 +24,7 @@
                 <div class="d-flex flex-row justify-content-around mt-3 mb-4">
                     @foreach ($tallas as $talla)
                         <button id="{{ $talla->idArticuloTalla }}" name="{{ $talla->stockArticulo }}"
-                            class="mr-4 btn btn-light border border-dark button-talla">{{ $talla->nombreTalla }}</button>
+                            class="mr-4 button-talla">{{ $talla->nombreTalla }}</button>
                     @endforeach
                 </div>
                 <form action="{{ route('shop.cart.store') }}" method="POST">
@@ -51,9 +51,9 @@
                         <div class="card h-100">
                             <a class="border-bottom" href="{{ route('shop.product', $moreproduct->nombreArticulo) }}">
                                 @if($moreproduct->photoArticulo)
-                                    <img class="card-img-top" src="{{ asset('store/'.$moreproduct->photoArticulo) }}" alt="{{$moreproduct->photoArticulo}}">
+                                    <img style="height: 250px;object-fit: cover" class="card-img-top" src="{{ asset('store/'.$moreproduct->photoArticulo) }}" alt="{{$moreproduct->photoArticulo}}">
                                 @else
-                                    <img class="card-img-top" src="{{ asset('store/no-image.jpg') }}" alt="{{$moreproduct->photoArticulo}}">
+                                    <img style="height: 250px;object-fit: cover" class="card-img-top" src="{{ asset('store/no-image.jpg') }}" alt="{{$moreproduct->photoArticulo}}">
                                 @endif
                                 
                             </a>
