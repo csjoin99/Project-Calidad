@@ -11,32 +11,6 @@ use Illuminate\Support\Facades\DB;
 
 class ArticuloController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function articulosShow()
     {
         if (!Auth::guard('admin')->check()) {
@@ -44,32 +18,35 @@ class ArticuloController extends Controller
         }
         return view('admin.articulos');
     }
-    public function articulosGet(Request $request){ 
-        $articulos = articulo::where('estadoArticulo','!=',0)->get();
+    public function articulosGet(Request $request)
+    {
+        $articulos = articulo::where('estadoArticulo', '!=', 0)->get();
         for ($i = 0; $i < count($articulos); $i++) {
             if ($articulos[$i]->photoArticulo) {
                 $articulos[$i]->photoArticulo = asset('store/' . $articulos[$i]->photoArticulo);
             }
         }
         $length = count($articulos);
-        $page = ($request->page)?$request->page:1;
-        $perPage = 5; 
+        $page = ($request->page) ? $request->page : 1;
+        $perPage = 5;
         $offset = ($page * $perPage) - $perPage;
         $paginate = new LengthAwarePaginator(
-            array_slice($articulos->toArray(),$offset,$perPage, true),
+            array_slice($articulos->toArray(), $offset, $perPage, true),
             $length,
             $perPage,
             $page
         );
         return [
-            'pagination'=>$paginate,
-            'length'=>$length,];
+            'pagination' => $paginate,
+            'length' => $length,
+        ];
     }
     public function store(Request $request)
     {
         try {
             if ($previousarticulo = DB::table('articulos')
-            ->where(['nombreArticulo' => $request->nombreArticulo,'estadoArticulo'=>0])->first()) {
+                ->where(['nombreArticulo' => $request->nombreArticulo, 'estadoArticulo' => 0])->first()
+            ) {
                 $id = $previousarticulo->idArticulo;
                 DB::table('articulos')
                     ->where('idArticulo', $id)
@@ -106,18 +83,8 @@ class ArticuloController extends Controller
                     ]);
             }
             if ($request->photoArticulo) {
-                $currentimage = DB::table('articulos')->where('idArticulo', $id)->value('photoArticulo');
-                if ($currentimage) {
-                    $imgpath = public_path() . '/store/' . $currentimage;
-                    if (file_exists($imgpath)) {
-                        unlink($imgpath);
-                    }
-                }
-                $exploded = explode(',', $request->photoArticulo);
-                $decoded = base64_decode($exploded[1]);
-                $fileName = $request->nombreArticulo . $id . '.jpg';
-                $path = public_path() . '/store/' . $fileName;
-                file_put_contents($path, $decoded);
+                $this->destroyPhoto($id);
+                $fileName = $this->uploadPhoto($id, $request->photoArticulo);
                 DB::table('articulos')
                     ->where('idArticulo', $id)
                     ->update([
@@ -129,40 +96,12 @@ class ArticuloController extends Controller
             return ['success' => false, 'message' => 'No se pudo agregar el articulo'];
         }
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\articulo  $articulo
-     * @return \Illuminate\Http\Response
-     */
-    public function show(articulo $articulo)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\articulo  $articulo
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id, Request $request)
     {
         try {
             if ($request->photoArticulo) {
-                $currentimage = DB::table('articulos')->where('idArticulo', $id)->value('photoArticulo');
-                if ($currentimage) {
-                    $imgpath = public_path() . '/store/' . $currentimage;
-                    if (file_exists($imgpath)) {
-                        unlink($imgpath);
-                    }
-                }
-                $exploded = explode(',', $request->photoArticulo);
-                $decoded = base64_decode($exploded[1]);
-                $fileName = $request->nombreArticulo . $id . '.jpg';
-                $path = public_path() . '/store/' . $fileName;
-                file_put_contents($path, $decoded);
+                $this->destroyPhoto($id);
+                $fileName = $this->uploadPhoto($id, $request->photoArticulo);
                 DB::table('articulos')
                     ->where('idArticulo', $id)
                     ->update([
@@ -184,37 +123,13 @@ class ArticuloController extends Controller
             }
             return ['success' => true, 'message' => 'Se edito el articulo exitosamente'];
         } catch (\Throwable $th) {
-            return ['success' => false, 'message' => 'No se pudo editar el articulo'];
+            return ['success' => false, 'message' => 'No se pudo editar el articulo' . $th->getMessage()];
         }
     }
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\articulo  $articulo
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, articulo $articulo)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\articulo  $articulo
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         try {
-            $currentimage = DB::table('articulos')->where('idArticulo', $id)->value('photoArticulo');
-            if ($currentimage) {
-                $imgpath = public_path() . '/store/' . $currentimage;
-                if (file_exists($imgpath)) {
-                    unlink($imgpath);
-                }
-            }
+            $this->destroyPhoto($id);
             DB::table('articulos')
                 ->where('idArticulo', $id)
                 ->update([
@@ -228,38 +143,31 @@ class ArticuloController extends Controller
     }
     public function showProducts($genero)
     {
-        return view('shop.productsmujer')->with(['Titulo' => 'Artículos ' . $genero, 'genderTitulo' => 'Todos', 'genero' => $genero]);
+        return view('shop.products')->with(['Titulo' => 'Artículos ' . $genero, 'genderTitulo' => 'Todos', 'genero' => $genero]);
     }
 
     public function showProductsFilter($genero, Request $request)
     {
-        if ($genero == 'mujeres') {
-            $generoArticulo = 2;
-        } else {
-            if ($genero == 'hombres') {
-                $generoArticulo = 1;
+        if ($genero == 'mujeres' || $genero == 'hombres') {
+            $generoArticulo = $genero == 'mujeres' ? 2 : 1;
+            if ($request->categoria) {
+                $products = DB::select("select * from (SELECT *,(select COUNT(*) from articulo_tallas where 
+                articulo_tallas.idArticuloS=articulos.idArticulo and articulo_tallas.estadoArticuloTalla!=0) as cant 
+                from articulos where articulos.estadoArticulo!=0 order by articulos.idArticulo ASC) as b where b.cant !=0 
+                and generoArticulo=? and categoriaArticulo=?", [$generoArticulo, $request->categoria]);
             } else {
-                return redirect()->route('main');
+                $products = DB::select("select * from (SELECT *,(select COUNT(*) from articulo_tallas where 
+                articulo_tallas.idArticuloS=articulos.idArticulo and articulo_tallas.estadoArticuloTalla!=0) as cant 
+                from articulos where articulos.estadoArticulo!=0 order by articulos.idArticulo ASC) as b where b.cant !=0 
+                and generoArticulo=?", [$generoArticulo]);
             }
-        }
-        if ($request->categoria) {
-            $products = DB::select("select * from (SELECT *,(select COUNT(*) from articulo_tallas where 
-            articulo_tallas.idArticuloS=articulos.idArticulo and articulo_tallas.estadoArticuloTalla!=0) as cant 
-            from articulos where articulos.estadoArticulo!=0 order by articulos.idArticulo ASC) as b where b.cant !=0 
-            and generoArticulo=? and categoriaArticulo=?", [$generoArticulo, $request->categoria]);
-        } else {
-            $products = DB::select("select * from (SELECT *,(select COUNT(*) from articulo_tallas where 
-            articulo_tallas.idArticuloS=articulos.idArticulo and articulo_tallas.estadoArticuloTalla!=0) as cant 
-            from articulos where articulos.estadoArticulo!=0 order by articulos.idArticulo ASC) as b where b.cant !=0 
-            and generoArticulo=?", [$generoArticulo]);
-        }
-        for ($i = 0; $i < count($products); $i++) {
-            if ($products[$i]->photoArticulo) {
-                $products[$i]->photoArticulo = asset('store/' . $products[$i]->photoArticulo);
+            for ($i = 0; $i < count($products); $i++) {
+                $products[$i]->photoArticulo = $products[$i]->photoArticulo ? asset('store/' . $products[$i]->photoArticulo) : $products[$i]->photoArticulo;
             }
+            $lenght = count($products);
+            return [$products, $lenght];
         }
-        $lenght = count($products);
-        return [$products, $lenght];
+        return redirect()->route('main');
     }
     public function showProduct($nombreproducto)
     {
@@ -272,14 +180,11 @@ class ArticuloController extends Controller
         articulo_tallas.idArticuloS=articulos.idArticulo and articulo_tallas.estadoArticuloTalla!=0) 
         as cant from articulos where articulos.estadoArticulo!=0 order by articulos.idArticulo ASC) 
         as b where b.cant !=0 ORDER BY RAND() LIMIT 4');
+        $empty = 'El articulo seleccionado no cuenta con stock';
         foreach ($tallas as $item) {
             if ($item->stockArticulo > 0) {
-                return view('shop.product')->with([
-                    'Titulo' => 'Artículos',
-                    'product' => $product,
-                    'tallas' => $tallas,
-                    'moreproducts' => $moreproducts
-                ]);
+                $empty = '';
+                break;
             }
         }
         return view('shop.product')->with([
@@ -287,7 +192,25 @@ class ArticuloController extends Controller
             'product' => $product,
             'tallas' => $tallas,
             'moreproducts' => $moreproducts,
-            'empty' => 'El articulo seleccionado no cuenta con stock'
+            'empty' => $empty
         ]);
+    }
+    private function uploadPhoto($id, $photo)
+    {
+        $exploded = explode(',', $photo);
+        $decoded = base64_decode($exploded[1]);
+        $fileName = md5(openssl_random_pseudo_bytes(20)) . $id . '.jpg';
+        $path = public_path() . '/store/' . $fileName;
+        file_put_contents($path, $decoded);
+        return $fileName;
+    }
+    private function destroyPhoto($id)
+    {
+        if ($currentimage = DB::table('articulos')->where('idArticulo', $id)->value('photoArticulo')) {
+            $imgpath = public_path() . '/store/' . $currentimage;
+            if (file_exists($imgpath)) {
+                unlink($imgpath);
+            }
+        }
     }
 }

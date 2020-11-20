@@ -11,38 +11,12 @@ use Illuminate\Support\Facades\DB;
 
 class ArticuloTallaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         try {
             $check = DB::table('articulo_tallas')->select('estadoArticuloTalla')
                 ->where('idArticuloS', '=', $request->idArticulo)
                 ->where('idTallaS', '=', $request->tallaArticulo)->get();
-            
             if (!$check->isEmpty()) {
                 if ($check[0]->estadoArticuloTalla == 0) {
                     DB::table('articulo_tallas')
@@ -70,24 +44,6 @@ class ArticuloTallaController extends Controller
         }
         
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\articulo_talla  $articulo_talla
-     * @return \Illuminate\Http\Response
-     */
-    public function show(articulo_talla $articulo_talla)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\articulo_talla  $articulo_talla
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Request $request)
     {
         try {
@@ -101,25 +57,6 @@ class ArticuloTallaController extends Controller
             return response()->json(['success' => false,'message'=>'No se pudo editar el stock de la talla']);
         }
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\articulo_talla  $articulo_talla
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, articulo_talla $articulo_talla)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\articulo_talla  $articulo_talla
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
         try {
@@ -146,7 +83,6 @@ class ArticuloTallaController extends Controller
         left join (select articulo_tallas.idArticuloS, articulo_tallas.idTallaS, articulo_tallas.estadoArticuloTalla from 
         articulo_tallas WHERE articulo_tallas.idArticuloS=? and articulo_tallas.estadoArticuloTalla!=0) as b on 
         a.idTalla=b.idTallaS) as b where idArticulos IS NULL and categoriaTalla=?", [$id, $request->category]);
-
         return response()->json(['talla' => $tallas]);
     }
     public function articulosTallaGet(Request $request)
