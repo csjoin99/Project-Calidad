@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\articulo;
-use App\Models\articulo_talla;
-use App\Models\venta;
 use Error;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
@@ -148,9 +145,9 @@ class VentaController extends Controller
                     ]
                 );
             }
-            $pdfdoc = app(pdfgenerator::class)->index($clienteid, $ventaid);
+            $pdfdoc = app(PDFgenerator::class)->index($clienteid, $ventaid);
             Cart::destroy();
-            app(mailer::class)->index($pdfdoc, $fullname, $accountmail);
+            app(Mailer::class)->index($pdfdoc, $fullname, $accountmail);
             return redirect()->route('main')->with('success_message', 'Su compra con Paypal se realizó la compra');
         }
     }
@@ -206,10 +203,10 @@ class VentaController extends Controller
                     ]
                 );
             }
-            $pdfdoc = app(pdfgenerator::class)->index($clienteid, $ventaid);
+            $pdfdoc = app(PDFgenerator::class)->index($clienteid, $ventaid);
             Cart::destroy();
             $correo = $user->email;
-            app(mailer::class)->index($pdfdoc, $fullname, $correo);
+            app(Mailer::class)->index($pdfdoc, $fullname, $correo);
             return redirect()->route('main')->with('success_message', 'Su compra se ha realizado con exito');
         } catch (\Throwable $th) {
             return redirect()->route('main')->with('failure_message', 'No se pudo proceder con la compra');

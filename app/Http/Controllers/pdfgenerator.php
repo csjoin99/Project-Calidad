@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 
-class pdfgenerator extends Controller
+class PDFgenerator extends Controller
 {
     public function index($clienteid, $ventaid)
     {

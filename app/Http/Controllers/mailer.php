@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use PHPMailer\PHPMailer\PHPMailer;
 
-class mailer extends Controller
+class Mailer extends Controller
 {
     public function index($pdf, $name, $correo)
     {
