@@ -1,0 +1,388 @@
+[{
+    "id_ubigeo": "3929",
+    "nombre_ubigeo": "Ancon",
+    "codigo_ubigeo": "02",
+    "etiqueta_ubigeo": "Ancon, Lima",
+    "buscador_ubigeo": "ancon lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3930",
+    "nombre_ubigeo": "Ate",
+    "codigo_ubigeo": "03",
+    "etiqueta_ubigeo": "Ate, Lima",
+    "buscador_ubigeo": "ate lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3931",
+    "nombre_ubigeo": "Barranco",
+    "codigo_ubigeo": "04",
+    "etiqueta_ubigeo": "Barranco, Lima",
+    "buscador_ubigeo": "barranco lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3932",
+    "nombre_ubigeo": "Bre\u00f1a",
+    "codigo_ubigeo": "05",
+    "etiqueta_ubigeo": "Bre\u00f1a, Lima",
+    "buscador_ubigeo": "brena lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3933",
+    "nombre_ubigeo": "Carabayllo",
+    "codigo_ubigeo": "06",
+    "etiqueta_ubigeo": "Carabayllo, Lima",
+    "buscador_ubigeo": "carabayllo lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3928",
+    "nombre_ubigeo": "Cercado de Lima",
+    "codigo_ubigeo": "01",
+    "etiqueta_ubigeo": "Cercado de Lima, Lima",
+    "buscador_ubigeo": "cercado de lima lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3934",
+    "nombre_ubigeo": "Chaclacayo",
+    "codigo_ubigeo": "07",
+    "etiqueta_ubigeo": "Chaclacayo, Lima",
+    "buscador_ubigeo": "chaclacayo lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3935",
+    "nombre_ubigeo": "Chorrillos",
+    "codigo_ubigeo": "08",
+    "etiqueta_ubigeo": "Chorrillos, Lima",
+    "buscador_ubigeo": "chorrillos lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3936",
+    "nombre_ubigeo": "Cieneguilla",
+    "codigo_ubigeo": "09",
+    "etiqueta_ubigeo": "Cieneguilla, Lima",
+    "buscador_ubigeo": "cieneguilla lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3937",
+    "nombre_ubigeo": "Comas",
+    "codigo_ubigeo": "10",
+    "etiqueta_ubigeo": "Comas, Lima",
+    "buscador_ubigeo": "comas lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3938",
+    "nombre_ubigeo": "El Agustino",
+    "codigo_ubigeo": "11",
+    "etiqueta_ubigeo": "El Agustino, Lima",
+    "buscador_ubigeo": "el agustino lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3939",
+    "nombre_ubigeo": "Independencia",
+    "codigo_ubigeo": "12",
+    "etiqueta_ubigeo": "Independencia, Lima",
+    "buscador_ubigeo": "independencia lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3940",
+    "nombre_ubigeo": "Jesus Maria",
+    "codigo_ubigeo": "13",
+    "etiqueta_ubigeo": "Jesus Maria, Lima",
+    "buscador_ubigeo": "jesus maria lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3941",
+    "nombre_ubigeo": "La Molina",
+    "codigo_ubigeo": "14",
+    "etiqueta_ubigeo": "La Molina, Lima",
+    "buscador_ubigeo": "la molina lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3942",
+    "nombre_ubigeo": "La Victoria",
+    "codigo_ubigeo": "15",
+    "etiqueta_ubigeo": "La Victoria, Lima",
+    "buscador_ubigeo": "la victoria lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3943",
+    "nombre_ubigeo": "Lince",
+    "codigo_ubigeo": "16",
+    "etiqueta_ubigeo": "Lince, Lima",
+    "buscador_ubigeo": "lince lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3944",
+    "nombre_ubigeo": "Los Olivos",
+    "codigo_ubigeo": "17",
+    "etiqueta_ubigeo": "Los Olivos, Lima",
+    "buscador_ubigeo": "los olivos lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3945",
+    "nombre_ubigeo": "Lurigancho",
+    "codigo_ubigeo": "18",
+    "etiqueta_ubigeo": "Lurigancho, Lima",
+    "buscador_ubigeo": "lurigancho lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3946",
+    "nombre_ubigeo": "Lurin",
+    "codigo_ubigeo": "19",
+    "etiqueta_ubigeo": "Lurin, Lima",
+    "buscador_ubigeo": "lurin lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3947",
+    "nombre_ubigeo": "Magdalena del Mar",
+    "codigo_ubigeo": "20",
+    "etiqueta_ubigeo": "Magdalena del Mar, Lima",
+    "buscador_ubigeo": "magdalena del mar lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3949",
+    "nombre_ubigeo": "Miraflores",
+    "codigo_ubigeo": "22",
+    "etiqueta_ubigeo": "Miraflores, Lima",
+    "buscador_ubigeo": "miraflores lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3950",
+    "nombre_ubigeo": "Pachacamac",
+    "codigo_ubigeo": "23",
+    "etiqueta_ubigeo": "Pachacamac, Lima",
+    "buscador_ubigeo": "pachacamac lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3951",
+    "nombre_ubigeo": "Pucusana",
+    "codigo_ubigeo": "24",
+    "etiqueta_ubigeo": "Pucusana, Lima",
+    "buscador_ubigeo": "pucusana lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3948",
+    "nombre_ubigeo": "Pueblo Libre",
+    "codigo_ubigeo": "21",
+    "etiqueta_ubigeo": "Pueblo Libre, Lima",
+    "buscador_ubigeo": "pueblo libre lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3952",
+    "nombre_ubigeo": "Puente Piedra",
+    "codigo_ubigeo": "25",
+    "etiqueta_ubigeo": "Puente Piedra, Lima",
+    "buscador_ubigeo": "puente piedra lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3953",
+    "nombre_ubigeo": "Punta Hermosa",
+    "codigo_ubigeo": "26",
+    "etiqueta_ubigeo": "Punta Hermosa, Lima",
+    "buscador_ubigeo": "punta hermosa lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3954",
+    "nombre_ubigeo": "Punta Negra",
+    "codigo_ubigeo": "27",
+    "etiqueta_ubigeo": "Punta Negra, Lima",
+    "buscador_ubigeo": "punta negra lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3955",
+    "nombre_ubigeo": "Rimac",
+    "codigo_ubigeo": "28",
+    "etiqueta_ubigeo": "Rimac, Lima",
+    "buscador_ubigeo": "rimac lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3956",
+    "nombre_ubigeo": "San Bartolo",
+    "codigo_ubigeo": "29",
+    "etiqueta_ubigeo": "San Bartolo, Lima",
+    "buscador_ubigeo": "san bartolo lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3957",
+    "nombre_ubigeo": "San Borja",
+    "codigo_ubigeo": "30",
+    "etiqueta_ubigeo": "San Borja, Lima",
+    "buscador_ubigeo": "san borja lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3958",
+    "nombre_ubigeo": "San Isidro",
+    "codigo_ubigeo": "31",
+    "etiqueta_ubigeo": "San Isidro, Lima",
+    "buscador_ubigeo": "san isidro lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3959",
+    "nombre_ubigeo": "San Juan de Lurigancho",
+    "codigo_ubigeo": "32",
+    "etiqueta_ubigeo": "San Juan de Lurigancho, Lima",
+    "buscador_ubigeo": "san juan de lurigancho lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3960",
+    "nombre_ubigeo": "San Juan de Miraflores",
+    "codigo_ubigeo": "33",
+    "etiqueta_ubigeo": "San Juan de Miraflores, Lima",
+    "buscador_ubigeo": "san juan de miraflores lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3961",
+    "nombre_ubigeo": "San Luis",
+    "codigo_ubigeo": "34",
+    "etiqueta_ubigeo": "San Luis, Lima",
+    "buscador_ubigeo": "san luis lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3962",
+    "nombre_ubigeo": "San Martin de Porres",
+    "codigo_ubigeo": "35",
+    "etiqueta_ubigeo": "San Martin de Porres, Lima",
+    "buscador_ubigeo": "san martin de porres lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3963",
+    "nombre_ubigeo": "San Miguel",
+    "codigo_ubigeo": "36",
+    "etiqueta_ubigeo": "San Miguel, Lima",
+    "buscador_ubigeo": "san miguel lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3964",
+    "nombre_ubigeo": "Santa Anita",
+    "codigo_ubigeo": "37",
+    "etiqueta_ubigeo": "Santa Anita, Lima",
+    "buscador_ubigeo": "santa anita lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3965",
+    "nombre_ubigeo": "Santa Maria del Mar",
+    "codigo_ubigeo": "38",
+    "etiqueta_ubigeo": "Santa Maria del Mar, Lima",
+    "buscador_ubigeo": "santa maria del mar lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3966",
+    "nombre_ubigeo": "Santa Rosa",
+    "codigo_ubigeo": "39",
+    "etiqueta_ubigeo": "Santa Rosa, Lima",
+    "buscador_ubigeo": "santa rosa lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3967",
+    "nombre_ubigeo": "Santiago de Surco",
+    "codigo_ubigeo": "40",
+    "etiqueta_ubigeo": "Santiago de Surco, Lima",
+    "buscador_ubigeo": "santiago de surco lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3968",
+    "nombre_ubigeo": "Surquillo",
+    "codigo_ubigeo": "41",
+    "etiqueta_ubigeo": "Surquillo, Lima",
+    "buscador_ubigeo": "surquillo lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3969",
+    "nombre_ubigeo": "Villa El Salvador",
+    "codigo_ubigeo": "42",
+    "etiqueta_ubigeo": "Villa El Salvador, Lima",
+    "buscador_ubigeo": "villa el salvador lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}, {
+    "id_ubigeo": "3970",
+    "nombre_ubigeo": "Villa Maria del Triunfo",
+    "codigo_ubigeo": "43",
+    "etiqueta_ubigeo": "Villa Maria del Triunfo, Lima",
+    "buscador_ubigeo": "villa maria del triunfo lima",
+    "numero_hijos_ubigeo": "0",
+    "nivel_ubigeo": "3",
+    "id_padre_ubigeo": "3927"
+}]

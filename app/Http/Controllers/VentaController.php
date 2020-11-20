@@ -44,7 +44,9 @@ class VentaController extends Controller
         if (!Auth::user()) {
             return redirect()->route('login')->with('error', 'Debes estar logeado para hacer esta operación');
         }
-        return view('shop.checkout')->with('Titulo', 'Checkout');
+        $jsonString = file_get_contents("json/distritos.json");
+        $data = json_decode($jsonString);
+        return view('shop.checkout')->with(['Titulo'=>'Checkout','distritos'=>$data]);
     }
     public function paypal(request $request)
     {
@@ -106,7 +108,6 @@ class VentaController extends Controller
         if ($result->getState() === 'approved') {
             $nombre = $result->payer->payer_info->first_name;
             $apellido = $result->payer->payer_info->last_name;
-            $email = $result->payer->payer_info->email;
             $city = $result->payer->payer_info->shipping_address->city;
             $address = $result->payer->payer_info->shipping_address->line1;
             $user = Auth::user();
@@ -158,13 +159,13 @@ class VentaController extends Controller
             return redirect()->route('login')->with('error', 'Debes estar logeado para hacer esta operación');
         }
         try {
-            foreach(Cart::content() as $item){
-                $currentcant = DB::table('articulo_tallas')->where('idArticuloTalla',$item->id)->value('stockArticulo');
+            foreach (Cart::content() as $item) {
+                $currentcant = DB::table('articulo_tallas')->where('idArticuloTalla', $item->id)->value('stockArticulo');
                 $newcant = $currentcant - $item->qty;
-                if($newcant<0){
+                if ($newcant < 0) {
                     throw new Error("No hay suficiente articulos");
                 }
-                DB::table('articulo_tallas')->where('idArticuloTalla',$item->id)->update([
+                DB::table('articulo_tallas')->where('idArticuloTalla', $item->id)->update([
                     'stockArticulo' => $newcant
                 ]);
             }

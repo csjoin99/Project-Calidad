@@ -26,17 +26,25 @@
                         <div class="tab-content">
                             <!-- credit card info-->
                             <div id="contraentrega" class="tab-pane fade show active pt-3">
-                                <form action=" {{ route('shop.checkout.upondelivery') }} " method="POST" role="form">
+                                <form action=" {{ route('shop.checkout.upondelivery') }} " method="POST">
                                     {{ csrf_field() }}
-                                    <div class="form-group"> <label for="username">
+                                    <div class="form-group"> 
+                                        <label for="username">
                                             <h6>Distrito</h6>
-                                        </label> <input type="text" name="distrito" placeholder="Elija su distrito"
-                                            required class="form-control ">
+                                        </label> 
+                                            <select name="distrito" class="form-control " required>
+                                                <option value="" hidden>Seleccione un distrito</option>
+                                                @foreach ($distritos as $distrito)
+                                                    <option value='{{$distrito->nombre_ubigeo}}'>{{$distrito->nombre_ubigeo}}</option>
+                                                @endforeach
+                                            </select>
                                     </div>
-                                    <div class="form-group"> <label for="cardNumber">
+                                    <div class="form-group"> 
+                                        <label for="cardNumber">
                                             <h6>Dirección</h6>
                                         </label>
-                                        <div class="input-group"> <input type="text" name="direccion"
+                                        <div class="input-group"> 
+                                            <input type="text" name="direccion"
                                                 placeholder="Ingrese su dirección" class="form-control " required>
                                         </div>
                                     </div>
@@ -56,8 +64,12 @@
                                         <h6>Distrito</h6>
                                     </label>
                                     <div class="input-group">
-                                        <input type="text" name="distrito" placeholder="Distrito" class="form-control "
-                                            required>
+                                            <select name="distrito" class="form-control " required>
+                                                <option value="" hidden>Seleccione un distrito</option>
+                                                @foreach ($distritos as $distrito)
+                                                    <option value='{{$distrito->nombre_ubigeo}}'>{{$distrito->nombre_ubigeo}}</option>
+                                                @endforeach
+                                            </select>
                                     </div>
                                     <div class="form-group">
                                         <label for="direccion">
@@ -108,6 +120,8 @@
         @endif
     </div>
 </div>
+<script type="text/javascript" src="{{asset('json/distritos.json')}}"></script>
+<script type="text/javascript" src="{{asset('js/distritos.js')}}"></script>
 @endsection
 
 
