@@ -12,33 +12,33 @@ class Shoppingcart extends Controller
     //
     public function index()
     {
-        $moreproducts = DB::select('select * from (SELECT *,(select COUNT(*) from articulo_tallas where 
+        $recomendaciones = DB::select('select * from (SELECT *,(select COUNT(*) from articulo_tallas where 
         articulo_tallas.idArticuloS=articulos.idArticulo and articulo_tallas.estadoArticuloTalla!=0) 
         as cant from articulos where articulos.estadoArticulo!=0 order by articulos.idArticulo ASC) 
         as b where b.cant !=0 ORDER BY RAND() LIMIT 4');
         return view('shop.shoppingcart')->with([
             'Titulo' => 'Carrito de compra',
-            'moreproducts' => $moreproducts
+            'moreproducts' => $recomendaciones
         ]);
     }
     public function getCartContent()
     {
-        $cart = Cart::content();
-        $cartcontent = [
+        $cart_content = Cart::content();
+        $cart_precios = [
             'total' => Cart::Total(),
-            'subtotal' => number_format((Cart::Total() / 1.18), 2),
-            'igv' => number_format((Cart::Total() / 1.18 * 0.18), 2)
+            'subtotal' => number_format(((float)Cart::Total() / 1.18), 2),
+            'igv' => number_format(((float)Cart::Total() / 1.18 * 0.18), 2)
         ];
-        $cant = Cart::count();
-        return [$cart, $cartcontent, $cant];
+        $cart_cantidad = Cart::count();
+        return [$cart_content, $cart_precios, $cart_cantidad];
     }
     public function store(Request $request)
     {
-        $duplicates = Cart::search(function ($cartItem, $rowId) use ($request) {
+        $find_duplicates = Cart::search(function ($cartItem, $rowId) use ($request) {
             return $cartItem->id === $request->idArticuloTalla;
         });
-        if ($duplicates->isNotEmpty()) {
-            return redirect()->route('shop.cart')->with('success_message', 'El artículo ya se encuentra en su carrito de compra');
+        if ($find_duplicates->isNotEmpty()) {
+            return redirect()->route('shop.cart');
         }
         Cart::add(
             $request->idArticuloTalla,
@@ -51,7 +51,7 @@ class Shoppingcart extends Controller
                 'photoArticulo' => $request->photoArticulo
             ]
         );
-        return redirect()->route('shop.cart')->with('success_message', 'El producto fue agregado a su carrito de compra');
+        return redirect()->route('shop.cart');
     }
     public function destroy($id)
     {
@@ -60,6 +60,11 @@ class Shoppingcart extends Controller
     }
     public function update(Request $request, $id)
     {
+        $currentcant = DB::table('articulo_tallas')->where('idArticuloTalla', $request->iditem)->value('stockArticulo');
+        $newcant = $currentcant - $request->qty;
+        if($newcant<0){
+            return "No hay suficiente stock del articulo";
+        }
         Cart::update($id, $request->qty);
         return 'Se actualizo la cantidad de artículos';
     }

@@ -27,7 +27,6 @@ const vm = new Vue({
             this.cant = response.data[2]
             this.totalcart = response.data[1]
             this.componentKey += 1
-            console.log(response)
         })
     },
     methods: {
@@ -45,7 +44,8 @@ const vm = new Vue({
                 temp.qty = 1
             }
             Axios.patch(`/cart/${temp.rowId}`, {
-                    qty: temp.qty
+                    qty: temp.qty,
+                    iditem: temp.id
                 })
                 .then(function(response) {
                     vm.message = response.data

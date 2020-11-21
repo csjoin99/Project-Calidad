@@ -14,11 +14,11 @@ class ArticuloTallaController extends Controller
     public function store(Request $request)
     {
         try {
-            $check = DB::table('articulo_tallas')->select('estadoArticuloTalla')
+            $check_talla = DB::table('articulo_tallas')->select('estadoArticuloTalla')
                 ->where('idArticuloS', '=', $request->idArticulo)
                 ->where('idTallaS', '=', $request->tallaArticulo)->get();
-            if (!$check->isEmpty()) {
-                if ($check[0]->estadoArticuloTalla == 0) {
+            if (!$check_talla->isEmpty()) {
+                if ($check_talla[0]->estadoArticuloTalla == 0) {
                     DB::table('articulo_tallas')
                         ->where('idArticuloS', '=', $request->idArticulo)
                         ->where('idTallaS', $request->tallaArticulo)
@@ -89,28 +89,28 @@ class ArticuloTallaController extends Controller
     {
         $articulos = DB::select("SELECT articulos.idArticulo, articulos.estadoArticulo, articulos.nombreArticulo, articulos.categoriaArticulo,(select COUNT(*) from articulo_tallas where articulo_tallas.idArticuloS=articulos.idArticulo and articulo_tallas.estadoArticuloTalla!=0) 
         as cant from articulos where articulos.estadoArticulo!=0  order by articulos.idArticulo ASC");
-        $articuloscant = count($articulos);
-        $articuloTallas = DB::select("SELECT `articulo_tallas`.`idArticuloTalla`, `articulo_tallas`.`idArticuloS`, `articulo_tallas`.`idTallaS`, `articulo_tallas`.`stockArticulo`, `tallas`.`nombreTalla`
+        $articulos_cant = count($articulos);
+        $articulo_tallas = DB::select("SELECT `articulo_tallas`.`idArticuloTalla`, `articulo_tallas`.`idArticuloS`, `articulo_tallas`.`idTallaS`, `articulo_tallas`.`stockArticulo`, `tallas`.`nombreTalla`
         FROM `articulo_tallas` LEFT JOIN `tallas` ON `articulo_tallas`.`idTallaS` = `tallas`.`idTalla` where 
         `articulo_tallas`.`estadoArticuloTalla`!=0");
-        for ($i = 0; $i < $articuloscant; $i++) {
-            $arrayTallas = array();
-            for ($j = 0; $j < count($articuloTallas); $j++) {
-                if($articulos[$i]->idArticulo == $articuloTallas[$j]->idArticuloS){
-                    array_push($arrayTallas,(object)$articuloTallas[$j]);
+        for ($i = 0; $i < $articulos_cant; $i++) {
+            $array_tallas = array();
+            for ($j = 0; $j < count($articulo_tallas); $j++) {
+                if($articulos[$i]->idArticulo == $articulo_tallas[$j]->idArticuloS){
+                    array_push($array_tallas,(object)$articulo_tallas[$j]);
                 }
             }
-            $articulos[$i]->arrayTalla=$arrayTallas;
+            $articulos[$i]->arrayTalla=$array_tallas;
         }
         $page = ($request->page)?$request->page:1;
-        $perPage = 5; 
-        $offset = ($page * $perPage) - $perPage;
+        $per_page = 5; 
+        $offset = ($page * $per_page) - $per_page;
         $paginate = new LengthAwarePaginator(
-            array_slice($articulos,$offset,$perPage, true),
-            $articuloscant,
-            $perPage,
+            array_slice($articulos,$offset,$per_page, true),
+            $articulos_cant,
+            $per_page,
             $page
         );
-        return ['pagination' => $paginate, 'articuloscant' => $articuloscant];
+        return ['pagination' => $paginate, 'articuloscant' => $articulos_cant];
     }
 }

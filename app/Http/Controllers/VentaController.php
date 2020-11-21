@@ -44,9 +44,12 @@ class VentaController extends Controller
         if (!Auth::user()) {
             return redirect()->route('login')->with('error', 'Debes estar logeado para hacer esta operación');
         }
-        $jsonString = file_get_contents("json/distritos.json");
-        $data = json_decode($jsonString);
-        return view('shop.checkout')->with(['Titulo'=>'Checkout','distritos'=>$data]);
+        if (!$this->checkStockArticulos()) {
+            return redirect()->route('shop.cart')->with('failure_message', 'No hay stock suficiente');
+        }
+        $distritos_json = file_get_contents("json/distritos.json");
+        $distritos = json_decode($distritos_json);
+        return view('shop.checkout')->with(['Titulo' => 'Checkout', 'distritos' => $distritos]);
     }
     public function paypal(request $request)
     {
@@ -136,16 +139,7 @@ class VentaController extends Controller
                 'direccionVenta' => $address,
                 'distritoVenta' => $city
             ]);
-            foreach (Cart::content() as $item) {
-                DB::table('detalle_ventas')->insert(
-                    [
-                        'idVentaD' => $ventaid,
-                        'idArticuloTallaD' => $item->id,
-                        'cantidad' => $item->qty,
-                        'precioVentaD' => $item->price
-                    ]
-                );
-            }
+            $this->updateStockArticulos($ventaid);
             $pdfdoc = app(PDFgenerator::class)->index($clienteid, $ventaid);
             Cart::destroy();
             app(Mailer::class)->index($pdfdoc, $fullname, $accountmail);
@@ -159,16 +153,6 @@ class VentaController extends Controller
             return redirect()->route('login')->with('error', 'Debes estar logeado para hacer esta operación');
         }
         try {
-            foreach (Cart::content() as $item) {
-                $currentcant = DB::table('articulo_tallas')->where('idArticuloTalla', $item->id)->value('stockArticulo');
-                $newcant = $currentcant - $item->qty;
-                if ($newcant < 0) {
-                    throw new Error("No hay suficiente articulos");
-                }
-                DB::table('articulo_tallas')->where('idArticuloTalla', $item->id)->update([
-                    'stockArticulo' => $newcant
-                ]);
-            }
             $user = Auth::user();
             $clienteid = $user->id;
             $fullname = $user->firstname . " " . $user->lastname;
@@ -194,16 +178,7 @@ class VentaController extends Controller
                 'direccionVenta' => $request->direccion,
                 'distritoVenta' => $request->distrito
             ]);
-            foreach (Cart::content() as $item) {
-                DB::table('detalle_ventas')->insert(
-                    [
-                        'idVentaD' => $ventaid,
-                        'idArticuloTallaD' => $item->id,
-                        'cantidad' => $item->qty,
-                        'precioVentaD' => $item->price
-                    ]
-                );
-            }
+            $this->updateStockArticulos($ventaid);
             $pdfdoc = app(PDFgenerator::class)->index($clienteid, $ventaid);
             Cart::destroy();
             $correo = $user->email;
@@ -254,5 +229,34 @@ class VentaController extends Controller
             }
         }
         return $nroSerie;
+    }
+    private function checkStockArticulos()
+    {
+        foreach (Cart::content() as $item) {
+            $currentcant = DB::table('articulo_tallas')->where('idArticuloTalla', $item->id)->value('stockArticulo');
+            $newcant = $currentcant - $item->qty;
+            if ($newcant < 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+    private function updateStockArticulos($ventaid)
+    {
+        foreach (Cart::content() as $item) {
+            DB::table('detalle_ventas')->insert(
+                [
+                    'idVentaD' => $ventaid,
+                    'idArticuloTallaD' => $item->id,
+                    'cantidad' => $item->qty,
+                    'precioVentaD' => $item->price
+                ]
+            );
+            $currentcant = DB::table('articulo_tallas')->where('idArticuloTalla', $item->id)->value('stockArticulo');
+            $newcant = $currentcant - $item->qty;
+            DB::table('articulo_tallas')->where('idArticuloTalla', $item->id)->update([
+                'stockArticulo' => $newcant
+            ]);
+        }
     }
 }

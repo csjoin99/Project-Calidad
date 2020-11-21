@@ -1,7 +1,7 @@
 @extends('layouts.guestmain')
 @section('content')
 <div id="showarticulos" class="body-content">
-    <div :key="componentKey" class="container">
+    <div :key="componentKey" class="d-none" v-bind:class="[init==1 ? 'container d-block' : 'container d-none']">
         <div class="row">
             <div class="col-lg-3">
                 <h3 class="my-2"><strong>Categorías</strong></h3>

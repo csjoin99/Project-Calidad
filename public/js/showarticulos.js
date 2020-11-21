@@ -19344,7 +19344,8 @@ var vm = new Vue({
       categoria: 'Todos',
       cant: 0,
       componentKey: 0,
-      gender: window.gender
+      gender: window.gender,
+      init: ''
     };
   },
   created: function created() {
@@ -19352,6 +19353,7 @@ var vm = new Vue({
       vm.articulos = response.data[0];
       vm.cant = response.data[1];
       vm.categoria = 'Todos';
+      vm.init = 1;
       console.log(response);
     });
   },

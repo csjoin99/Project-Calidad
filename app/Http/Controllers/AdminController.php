@@ -27,73 +27,12 @@ class AdminController extends Controller
         }
         $ventas = venta::count();
         $users = User::count();
-        $det_venta = DB::select("SELECT sum(detalle_ventas.cantidad) as cantidad FROM detalle_ventas");
+        $productos_vendidos = DB::select("SELECT sum(detalle_ventas.cantidad) as cantidad FROM detalle_ventas");
         return view('admin.dashboard')->with([
             'ventas' => $ventas,
             'users' => $users,
-            'det_venta' => $det_venta[0]->cantidad
+            'det_venta' => $productos_vendidos[0]->cantidad
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\admin  $admin
-     * @return \Illuminate\Http\Response
-     */
-    public function show(admin $admin)
-    {
-        //
-    }
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\admin  $admin
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(admin $admin)
-    {
-        //
-    }
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\admin  $admin
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, admin $admin)
-    {
-        //
-    }
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\admin  $admin
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(admin $admin)
-    {
-        //
     }
     public function usuariosShow()
     {

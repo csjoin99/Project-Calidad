@@ -19365,7 +19365,6 @@ var vm = new Vue({
       _this.cant = response.data[2];
       _this.totalcart = response.data[1];
       _this.componentKey += 1;
-      console.log(response);
     });
   },
   methods: {
@@ -19385,7 +19384,8 @@ var vm = new Vue({
       }
 
       Axios.patch("/cart/".concat(temp.rowId), {
-        qty: temp.qty
+        qty: temp.qty,
+        iditem: temp.id
       }).then(function (response) {
         vm.message = response.data;
         vm.obtener();

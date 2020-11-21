@@ -26,28 +26,29 @@ class ArticuloController extends Controller
                 $articulos[$i]->photoArticulo = asset('store/' . $articulos[$i]->photoArticulo);
             }
         }
-        $length = count($articulos);
+        $cantidad_articulos = count($articulos);
         $page = ($request->page) ? $request->page : 1;
-        $perPage = 5;
-        $offset = ($page * $perPage) - $perPage;
+        $per_page = 5;
+        $offset = ($page * $per_page) - $per_page;
         $paginate = new LengthAwarePaginator(
-            array_slice($articulos->toArray(), $offset, $perPage, true),
-            $length,
-            $perPage,
+            array_slice($articulos->toArray(), $offset, $per_page, true),
+            $cantidad_articulos,
+            $per_page,
             $page
         );
         return [
             'pagination' => $paginate,
-            'length' => $length,
+            'length' => $cantidad_articulos,
         ];
     }
     public function store(Request $request)
     {
         try {
-            if ($previousarticulo = DB::table('articulos')
+            /* Verificar si hay otro articulo con ese nombre y si este tiene el estado eliminado */
+            if ($check_previous_articulo = DB::table('articulos')
                 ->where(['nombreArticulo' => $request->nombreArticulo, 'estadoArticulo' => 0])->first()
             ) {
-                $id = $previousarticulo->idArticulo;
+                $id = $check_previous_articulo->idArticulo;
                 DB::table('articulos')
                     ->where('idArticulo', $id)
                     ->update([
@@ -84,11 +85,11 @@ class ArticuloController extends Controller
             }
             if ($request->photoArticulo) {
                 $this->destroyPhoto($id);
-                $fileName = $this->uploadPhoto($id, $request->photoArticulo);
+                $photo_name = $this->uploadPhoto($id, $request->photoArticulo);
                 DB::table('articulos')
                     ->where('idArticulo', $id)
                     ->update([
-                        'photoArticulo' => $fileName
+                        'photoArticulo' => $photo_name
                     ]);
             }
             return ['success' => true, 'message' => 'Se agrego el articulo exitosamente'];
@@ -101,7 +102,7 @@ class ArticuloController extends Controller
         try {
             if ($request->photoArticulo) {
                 $this->destroyPhoto($id);
-                $fileName = $this->uploadPhoto($id, $request->photoArticulo);
+                $photo_name = $this->uploadPhoto($id, $request->photoArticulo);
                 DB::table('articulos')
                     ->where('idArticulo', $id)
                     ->update([
@@ -109,7 +110,7 @@ class ArticuloController extends Controller
                         'categoriaArticulo' => $request->categoriaArticulo,
                         'precioArticulo' => $request->precioArticulo,
                         'generoArticulo' => $request->generoArticulo,
-                        'photoArticulo' => $fileName
+                        'photoArticulo' => $photo_name
                     ]);
             } else {
                 DB::table('articulos')
@@ -151,63 +152,63 @@ class ArticuloController extends Controller
         if ($genero == 'mujeres' || $genero == 'hombres') {
             $generoArticulo = $genero == 'mujeres' ? 2 : 1;
             if ($request->categoria) {
-                $products = DB::select("select * from (SELECT *,(select COUNT(*) from articulo_tallas where 
+                $articulos = DB::select("select * from (SELECT *,(select COUNT(*) from articulo_tallas where 
                 articulo_tallas.idArticuloS=articulos.idArticulo and articulo_tallas.estadoArticuloTalla!=0) as cant 
                 from articulos where articulos.estadoArticulo!=0 order by articulos.idArticulo ASC) as b where b.cant !=0 
                 and generoArticulo=? and categoriaArticulo=?", [$generoArticulo, $request->categoria]);
             } else {
-                $products = DB::select("select * from (SELECT *,(select COUNT(*) from articulo_tallas where 
+                $articulos = DB::select("select * from (SELECT *,(select COUNT(*) from articulo_tallas where 
                 articulo_tallas.idArticuloS=articulos.idArticulo and articulo_tallas.estadoArticuloTalla!=0) as cant 
                 from articulos where articulos.estadoArticulo!=0 order by articulos.idArticulo ASC) as b where b.cant !=0 
                 and generoArticulo=?", [$generoArticulo]);
             }
-            for ($i = 0; $i < count($products); $i++) {
-                $products[$i]->photoArticulo = $products[$i]->photoArticulo ? asset('store/' . $products[$i]->photoArticulo) : $products[$i]->photoArticulo;
+            for ($i = 0; $i < count($articulos); $i++) {
+                $articulos[$i]->photoArticulo = $articulos[$i]->photoArticulo ? asset('store/' . $articulos[$i]->photoArticulo) : $articulos[$i]->photoArticulo;
             }
-            $lenght = count($products);
-            return [$products, $lenght];
+            $cantidad_articulos = count($articulos);
+            return [$articulos, $cantidad_articulos];
         }
         return redirect()->route('main');
     }
     public function showProduct($nombreproducto)
     {
         $product = DB::table('articulos')->where('nombreArticulo', '=', $nombreproducto)->get();
-        $tallas = DB::select("SELECT `articulo_tallas`.`idArticuloTalla`, `articulo_tallas`.`idArticuloS`, 
+        $tallas_producto = DB::select("SELECT `articulo_tallas`.`idArticuloTalla`, `articulo_tallas`.`idArticuloS`, 
         `articulo_tallas`.`idTallaS`, `articulo_tallas`.`stockArticulo`, `tallas`.`nombreTalla`
         FROM `articulo_tallas` LEFT JOIN `tallas` ON `articulo_tallas`.`idTallaS` = `tallas`.`idTalla`
         WHERE articulo_tallas.estadoArticuloTalla!=0 and `articulo_tallas`.`idArticuloS`=?", [$product[0]->idArticulo]);
-        $moreproducts = DB::select('select * from (SELECT *,(select COUNT(*) from articulo_tallas where 
+        $recomendaciones = DB::select('select * from (SELECT *,(select COUNT(*) from articulo_tallas where 
         articulo_tallas.idArticuloS=articulos.idArticulo and articulo_tallas.estadoArticuloTalla!=0) 
         as cant from articulos where articulos.estadoArticulo!=0 order by articulos.idArticulo ASC) 
         as b where b.cant !=0 ORDER BY RAND() LIMIT 4');
-        $empty = 'El articulo seleccionado no cuenta con stock';
-        foreach ($tallas as $item) {
+        $message_stock = 'El articulo seleccionado no cuenta con stock';
+        foreach ($tallas_producto as $item) {
             if ($item->stockArticulo > 0) {
-                $empty = '';
+                $message_stock = '';
                 break;
             }
         }
         return view('shop.product')->with([
             'Titulo' => 'Artículos',
             'product' => $product,
-            'tallas' => $tallas,
-            'moreproducts' => $moreproducts,
-            'empty' => $empty
+            'tallas' => $tallas_producto,
+            'moreproducts' => $recomendaciones,
+            'empty' => $message_stock
         ]);
     }
     private function uploadPhoto($id, $photo)
     {
         $exploded = explode(',', $photo);
         $decoded = base64_decode($exploded[1]);
-        $fileName = md5(openssl_random_pseudo_bytes(20)) . $id . '.jpg';
-        $path = public_path() . '/store/' . $fileName;
+        $nombre_photo = md5(openssl_random_pseudo_bytes(20)) . $id . '.jpg';
+        $path = public_path() . '/store/' . $nombre_photo;
         file_put_contents($path, $decoded);
-        return $fileName;
+        return $nombre_photo;
     }
     private function destroyPhoto($id)
     {
-        if ($currentimage = DB::table('articulos')->where('idArticulo', $id)->value('photoArticulo')) {
-            $imgpath = public_path() . '/store/' . $currentimage;
+        if ($check_photo_articulo = DB::table('articulos')->where('idArticulo', $id)->value('photoArticulo')) {
+            $imgpath = public_path() . '/store/' . $check_photo_articulo;
             if (file_exists($imgpath)) {
                 unlink($imgpath);
             }

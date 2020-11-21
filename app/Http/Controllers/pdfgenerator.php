@@ -13,14 +13,14 @@ class PDFgenerator extends Controller
     {
         $cliente = DB::table('users')->where('id', $clienteid)->get();
         $venta = DB::table('ventas')->where('idVenta', $ventaid)->get();
-        $nombreCliente = $venta[0]->customerVenta;
-        $emailCliente = $cliente[0]->email;
-        $nroFactura = $venta[0]->serieComprobanteVenta." ".$venta[0]->numComprobanteVenta ;
-        $fechaFactura = $venta[0]->fechaVenta;
-        $direccionVenta = $venta[0]->direccionVenta;
-        $distritoVenta = $venta[0]->distritoVenta;
-        $igvreal = number_format((Cart::Total()/1.18*0.18), 2);
-        $subtotalreal = number_format((Cart::Total()/1.18), 2);
+        $nombre_cliente = $venta[0]->customerVenta;
+        $email_cliente = $cliente[0]->email;
+        $nro_factura = $venta[0]->serieComprobanteVenta." ".$venta[0]->numComprobanteVenta ;
+        $fecha_factura = $venta[0]->fechaVenta;
+        $direccion_venta = $venta[0]->direccionVenta;
+        $distrito_venta = $venta[0]->distritoVenta;
+        $igv = number_format((Cart::Total()/1.18*0.18), 2);
+        $subtotal = number_format((Cart::Total()/1.18), 2);
         $pdf = App::make('dompdf.wrapper');
         $output =
             "
@@ -136,8 +136,8 @@ class PDFgenerator extends Controller
                                         <h5 style='color: #565757'>Clothing and More</h5>
                                 </td>  
                                 <td>
-                                    Factura: $nroFactura<br>
-                                    Creado: $fechaFactura<br>
+                                    Factura: $nro_factura<br>
+                                    Creado: $fecha_factura<br>
                                 </td>
                     </tr>
                 </table>
@@ -152,9 +152,9 @@ class PDFgenerator extends Controller
                                         3ra zn de Collique<br>
                                     </td>
                                     <td>
-                                        $direccionVenta $distritoVenta<br>
-                                        $nombreCliente<br>
-                                        $emailCliente
+                                        $direccion_venta $distrito_venta<br>
+                                        $nombre_cliente<br>
+                                        $email_cliente
                                     </td>
                                 </tr>
                             </table>
@@ -204,7 +204,7 @@ class PDFgenerator extends Controller
                         <td></td>
                         <td class='temp-right'>Subtotal: S/. </td>
                         <td class='temp-right'>
-                            $subtotalreal
+                            $subtotal
                         </td>
                     </tr>
                     <tr class='item'>
@@ -212,7 +212,7 @@ class PDFgenerator extends Controller
                         <td></td>
                         <td class='temp-right'>Impuesto: S/. </td>
                         <td class='temp-right'>
-                            $igvreal
+                            $igv
                         </td>
                     </tr>
                     <tr class='item'>

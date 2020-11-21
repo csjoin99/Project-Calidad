@@ -1,7 +1,16 @@
 @extends('layouts.guestmain')
 @section('content')
     <section id="cartview" class="container mt-5 mb-5">
+        @if (session()->has('failure_message'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session()->get('failure_message') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
         <div :key="componentKey" class="row">
+            
             <div v-if="cant" class="row">
                 <div class="col-lg-8">
                     <div class="card wish-list mb-3">
