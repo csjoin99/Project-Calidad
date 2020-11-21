@@ -19361,12 +19361,13 @@ var vm = new Vue({
     filtrar: function filtrar(filtro) {
       if (!filtro) {
         vm.categoria = 'Todos';
+        filtro = '';
       } else {
         vm.categoria = filtro;
       }
 
-      Axios.post("/productsget/".concat(vm.gender), {
-        categoria: filtro
+      Axios.get("/productsget/".concat(vm.gender, "?categoria=").concat(filtro), {
+        /* categoria: filtro */
       }).then(function (response) {
         vm.articulos = response.data[0];
         vm.cant = response.data[1];

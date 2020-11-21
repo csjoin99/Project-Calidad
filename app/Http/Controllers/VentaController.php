@@ -39,7 +39,7 @@ class VentaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function paginaCheckout()
     {
         if (!Auth::user()) {
             return redirect()->route('login')->with('error', 'Debes estar logeado para hacer esta operación');

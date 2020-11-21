@@ -4,82 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\talla;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TallaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function obtenerTallas(Request $request, $id)
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\talla  $talla
-     * @return \Illuminate\Http\Response
-     */
-    public function show(talla $talla)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\talla  $talla
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(talla $talla)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\talla  $talla
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, talla $talla)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\talla  $talla
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(talla $talla)
-    {
-        //
+        $tallas = DB::select("select * from (select * from (select idTalla, nombreTalla, categoriaTalla from tallas) as a 
+        left join (select articulo_tallas.idArticuloS, articulo_tallas.idTallaS, articulo_tallas.estadoArticuloTalla from 
+        articulo_tallas WHERE articulo_tallas.idArticuloS=? and articulo_tallas.estadoArticuloTalla!=0) as b on 
+        a.idTalla=b.idTallaS) as b where idArticulos IS NULL and categoriaTalla=?", [$id, $request->category]);
+        return response()->json(['talla' => $tallas]);
     }
 }

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 class Shoppingcart extends Controller
 {
     //
-    public function index()
+    public function paginaShoppingCart()
     {
         $recomendaciones = DB::select('select * from (SELECT *,(select COUNT(*) from articulo_tallas where 
         articulo_tallas.idArticuloS=articulos.idArticulo and articulo_tallas.estadoArticuloTalla!=0) 
@@ -21,7 +21,7 @@ class Shoppingcart extends Controller
             'moreproducts' => $recomendaciones
         ]);
     }
-    public function getCartContent()
+    public function contenidoShoppingCart()
     {
         $cart_content = Cart::content();
         $cart_precios = [
@@ -32,7 +32,7 @@ class Shoppingcart extends Controller
         $cart_cantidad = Cart::count();
         return [$cart_content, $cart_precios, $cart_cantidad];
     }
-    public function store(Request $request)
+    public function añadirItemShoppingCart(Request $request)
     {
         $find_duplicates = Cart::search(function ($cartItem, $rowId) use ($request) {
             return $cartItem->id === $request->idArticuloTalla;
@@ -53,12 +53,12 @@ class Shoppingcart extends Controller
         );
         return redirect()->route('shop.cart');
     }
-    public function destroy($id)
+    public function quitarItemShoppingCart($id)
     {
         Cart::remove($id);
         return 'Se quito el artículo';
     }
-    public function update(Request $request, $id)
+    public function actualizarCantidadShoppingCart(Request $request, $id)
     {
         $currentcant = DB::table('articulo_tallas')->where('idArticuloTalla', $request->iditem)->value('stockArticulo');
         $newcant = $currentcant - $request->qty;

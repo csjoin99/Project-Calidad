@@ -11,14 +11,14 @@ use Illuminate\Support\Facades\DB;
 
 class ArticuloController extends Controller
 {
-    public function articulosShow()
+    public function vistaArticulos()
     {
         if (!Auth::guard('admin')->check()) {
             return redirect()->route('login.admin')->withErrors('Debes iniciar sesión para acceder');;
         }
         return view('admin.articulos');
     }
-    public function articulosGet(Request $request)
+    public function listaArticulos(Request $request)
     {
         $articulos = articulo::where('estadoArticulo', '!=', 0)->get();
         for ($i = 0; $i < count($articulos); $i++) {
@@ -41,7 +41,7 @@ class ArticuloController extends Controller
             'length' => $cantidad_articulos,
         ];
     }
-    public function store(Request $request)
+    public function insertArticulos(Request $request)
     {
         try {
             /* Verificar si hay otro articulo con ese nombre y si este tiene el estado eliminado */
@@ -97,7 +97,7 @@ class ArticuloController extends Controller
             return ['success' => false, 'message' => 'No se pudo agregar el articulo'];
         }
     }
-    public function edit($id, Request $request)
+    public function editArticulos($id, Request $request)
     {
         try {
             if ($request->photoArticulo) {
@@ -127,7 +127,7 @@ class ArticuloController extends Controller
             return ['success' => false, 'message' => 'No se pudo editar el articulo' . $th->getMessage()];
         }
     }
-    public function destroy($id)
+    public function destroyArticulos($id)
     {
         try {
             $this->destroyPhoto($id);
@@ -141,60 +141,6 @@ class ArticuloController extends Controller
         } catch (\Throwable $th) {
             return ['success' => false, 'message' => 'No se pudo eliminar el articulo'];
         }
-    }
-    public function showProducts($genero)
-    {
-        return view('shop.products')->with(['Titulo' => 'Artículos ' . $genero, 'genderTitulo' => 'Todos', 'genero' => $genero]);
-    }
-
-    public function showProductsFilter($genero, Request $request)
-    {
-        if ($genero == 'mujeres' || $genero == 'hombres') {
-            $generoArticulo = $genero == 'mujeres' ? 2 : 1;
-            if ($request->categoria) {
-                $articulos = DB::select("select * from (SELECT *,(select COUNT(*) from articulo_tallas where 
-                articulo_tallas.idArticuloS=articulos.idArticulo and articulo_tallas.estadoArticuloTalla!=0) as cant 
-                from articulos where articulos.estadoArticulo!=0 order by articulos.idArticulo ASC) as b where b.cant !=0 
-                and generoArticulo=? and categoriaArticulo=?", [$generoArticulo, $request->categoria]);
-            } else {
-                $articulos = DB::select("select * from (SELECT *,(select COUNT(*) from articulo_tallas where 
-                articulo_tallas.idArticuloS=articulos.idArticulo and articulo_tallas.estadoArticuloTalla!=0) as cant 
-                from articulos where articulos.estadoArticulo!=0 order by articulos.idArticulo ASC) as b where b.cant !=0 
-                and generoArticulo=?", [$generoArticulo]);
-            }
-            for ($i = 0; $i < count($articulos); $i++) {
-                $articulos[$i]->photoArticulo = $articulos[$i]->photoArticulo ? asset('store/' . $articulos[$i]->photoArticulo) : $articulos[$i]->photoArticulo;
-            }
-            $cantidad_articulos = count($articulos);
-            return [$articulos, $cantidad_articulos];
-        }
-        return redirect()->route('main');
-    }
-    public function showProduct($nombreproducto)
-    {
-        $product = DB::table('articulos')->where('nombreArticulo', '=', $nombreproducto)->get();
-        $tallas_producto = DB::select("SELECT `articulo_tallas`.`idArticuloTalla`, `articulo_tallas`.`idArticuloS`, 
-        `articulo_tallas`.`idTallaS`, `articulo_tallas`.`stockArticulo`, `tallas`.`nombreTalla`
-        FROM `articulo_tallas` LEFT JOIN `tallas` ON `articulo_tallas`.`idTallaS` = `tallas`.`idTalla`
-        WHERE articulo_tallas.estadoArticuloTalla!=0 and `articulo_tallas`.`idArticuloS`=?", [$product[0]->idArticulo]);
-        $recomendaciones = DB::select('select * from (SELECT *,(select COUNT(*) from articulo_tallas where 
-        articulo_tallas.idArticuloS=articulos.idArticulo and articulo_tallas.estadoArticuloTalla!=0) 
-        as cant from articulos where articulos.estadoArticulo!=0 order by articulos.idArticulo ASC) 
-        as b where b.cant !=0 ORDER BY RAND() LIMIT 4');
-        $message_stock = 'El articulo seleccionado no cuenta con stock';
-        foreach ($tallas_producto as $item) {
-            if ($item->stockArticulo > 0) {
-                $message_stock = '';
-                break;
-            }
-        }
-        return view('shop.product')->with([
-            'Titulo' => 'Artículos',
-            'product' => $product,
-            'tallas' => $tallas_producto,
-            'moreproducts' => $recomendaciones,
-            'empty' => $message_stock
-        ]);
     }
     private function uploadPhoto($id, $photo)
     {

@@ -19,7 +19,7 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function dashboardAdmin()
     {
         if (!Auth::guard('admin')->check()) {
 
@@ -34,7 +34,7 @@ class AdminController extends Controller
             'det_venta' => $productos_vendidos[0]->cantidad
         ]);
     }
-    public function usuariosShow()
+    public function listaUsuarios()
     {
         if (!Auth::guard('admin')->check()) {
             return redirect()->route('login.admin')->withErrors('Debes iniciar sesión para acceder');;

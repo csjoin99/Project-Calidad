@@ -11,7 +11,42 @@ use Illuminate\Support\Facades\DB;
 
 class ArticuloTallaController extends Controller
 {
-    public function store(Request $request)
+    public function paginaArticuloTalla()
+    {
+        if (!Auth::guard('admin')->check()) {
+            return redirect()->route('login.admin')->withErrors('Debes iniciar sesión para acceder');;
+        }
+        return view('admin.articulotalla');
+    }
+    public function listaArticuloTalla(Request $request)
+    {
+        $articulos = DB::select("SELECT articulos.idArticulo, articulos.estadoArticulo, articulos.nombreArticulo, articulos.categoriaArticulo,(select COUNT(*) from articulo_tallas where articulo_tallas.idArticuloS=articulos.idArticulo and articulo_tallas.estadoArticuloTalla!=0) 
+        as cant from articulos where articulos.estadoArticulo!=0  order by articulos.idArticulo ASC");
+        $articulos_cant = count($articulos);
+        $articulo_tallas = DB::select("SELECT `articulo_tallas`.`idArticuloTalla`, `articulo_tallas`.`idArticuloS`, `articulo_tallas`.`idTallaS`, `articulo_tallas`.`stockArticulo`, `tallas`.`nombreTalla`
+        FROM `articulo_tallas` LEFT JOIN `tallas` ON `articulo_tallas`.`idTallaS` = `tallas`.`idTalla` where 
+        `articulo_tallas`.`estadoArticuloTalla`!=0");
+        for ($i = 0; $i < $articulos_cant; $i++) {
+            $array_tallas = array();
+            for ($j = 0; $j < count($articulo_tallas); $j++) {
+                if($articulos[$i]->idArticulo == $articulo_tallas[$j]->idArticuloS){
+                    array_push($array_tallas,(object)$articulo_tallas[$j]);
+                }
+            }
+            $articulos[$i]->arrayTalla=$array_tallas;
+        }
+        $page = ($request->page)?$request->page:1;
+        $per_page = 5; 
+        $offset = ($page * $per_page) - $per_page;
+        $paginate = new LengthAwarePaginator(
+            array_slice($articulos,$offset,$per_page, true),
+            $articulos_cant,
+            $per_page,
+            $page
+        );
+        return ['pagination' => $paginate, 'articuloscant' => $articulos_cant];
+    }
+    public function insertArticuloTalla(Request $request)
     {
         try {
             $check_talla = DB::table('articulo_tallas')->select('estadoArticuloTalla')
@@ -44,7 +79,7 @@ class ArticuloTallaController extends Controller
         }
         
     }
-    public function edit(Request $request)
+    public function editArticuloTalla(Request $request)
     {
         try {
             DB::table('articulo_tallas')
@@ -57,7 +92,7 @@ class ArticuloTallaController extends Controller
             return response()->json(['success' => false,'message'=>'No se pudo editar el stock de la talla']);
         }
     }
-    public function destroy($id)
+    public function destroyArticuloTalla($id)
     {
         try {
             DB::table('articulo_tallas')
@@ -70,47 +105,12 @@ class ArticuloTallaController extends Controller
             return response()->json(['success' => false,'message'=>'No se pudo eliminar la talla']);
         }
     }
-    public function articulostallaShow()
-    {
-        if (!Auth::guard('admin')->check()) {
-            return redirect()->route('login.admin')->withErrors('Debes iniciar sesión para acceder');;
-        }
-        return view('admin.articulotalla');
-    }
-    public function getTallaArticulo(Request $request, $id)
+    public function obtenerTallas(Request $request, $id)
     {
         $tallas = DB::select("select * from (select * from (select idTalla, nombreTalla, categoriaTalla from tallas) as a 
         left join (select articulo_tallas.idArticuloS, articulo_tallas.idTallaS, articulo_tallas.estadoArticuloTalla from 
         articulo_tallas WHERE articulo_tallas.idArticuloS=? and articulo_tallas.estadoArticuloTalla!=0) as b on 
         a.idTalla=b.idTallaS) as b where idArticulos IS NULL and categoriaTalla=?", [$id, $request->category]);
         return response()->json(['talla' => $tallas]);
-    }
-    public function articulosTallaGet(Request $request)
-    {
-        $articulos = DB::select("SELECT articulos.idArticulo, articulos.estadoArticulo, articulos.nombreArticulo, articulos.categoriaArticulo,(select COUNT(*) from articulo_tallas where articulo_tallas.idArticuloS=articulos.idArticulo and articulo_tallas.estadoArticuloTalla!=0) 
-        as cant from articulos where articulos.estadoArticulo!=0  order by articulos.idArticulo ASC");
-        $articulos_cant = count($articulos);
-        $articulo_tallas = DB::select("SELECT `articulo_tallas`.`idArticuloTalla`, `articulo_tallas`.`idArticuloS`, `articulo_tallas`.`idTallaS`, `articulo_tallas`.`stockArticulo`, `tallas`.`nombreTalla`
-        FROM `articulo_tallas` LEFT JOIN `tallas` ON `articulo_tallas`.`idTallaS` = `tallas`.`idTalla` where 
-        `articulo_tallas`.`estadoArticuloTalla`!=0");
-        for ($i = 0; $i < $articulos_cant; $i++) {
-            $array_tallas = array();
-            for ($j = 0; $j < count($articulo_tallas); $j++) {
-                if($articulos[$i]->idArticulo == $articulo_tallas[$j]->idArticuloS){
-                    array_push($array_tallas,(object)$articulo_tallas[$j]);
-                }
-            }
-            $articulos[$i]->arrayTalla=$array_tallas;
-        }
-        $page = ($request->page)?$request->page:1;
-        $per_page = 5; 
-        $offset = ($page * $per_page) - $per_page;
-        $paginate = new LengthAwarePaginator(
-            array_slice($articulos,$offset,$per_page, true),
-            $articulos_cant,
-            $per_page,
-            $page
-        );
-        return ['pagination' => $paginate, 'articuloscant' => $articulos_cant];
     }
 }

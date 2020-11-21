@@ -26,11 +26,12 @@ const vm = new Vue({
         filtrar: (filtro) => {
             if (!filtro) {
                 vm.categoria = 'Todos'
+                filtro = ''
             } else {
                 vm.categoria = filtro
             }
-            Axios.post(`/productsget/${vm.gender}`, {
-                categoria: filtro
+            Axios.get(`/productsget/${vm.gender}?categoria=${filtro}`, {
+                /* categoria: filtro */
             }).then(response => {
                 vm.articulos = response.data[0]
                 vm.cant = response.data[1]
