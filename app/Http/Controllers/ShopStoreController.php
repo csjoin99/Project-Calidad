@@ -7,6 +7,11 @@ use Illuminate\Support\Facades\DB;
 
 class ShopStoreController extends Controller
 {
+    public function paginaPrincipal()
+    {
+        return view('shop.main')->with('Titulo', 'Bienvenido a Clothing and More');
+    }
+
     public function showListProducts($genero)
     {
         return view('shop.products')->with(['Titulo' => 'Artículos ' . $genero, 'genderTitulo' => 'Todos', 'genero' => $genero]);

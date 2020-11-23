@@ -51,7 +51,7 @@ Route::post('/admin/articulostalla/edit', [App\Http\Controllers\ArticuloTallaCon
 Route::post('/admin/articulostalla/destroy/{id}', [App\Http\Controllers\ArticuloTallaController::class, 'destroyArticuloTalla'] )->name('admin.articulotalla.destroy');
 
 /* Pagina principal */
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('main');
+Route::get('/', [App\Http\Controllers\ShopStoreController::class, 'paginaPrincipal'])->name('main');
 
 /* Checkout */
 //Pagina checkout
