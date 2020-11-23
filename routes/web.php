@@ -57,11 +57,11 @@ Route::get('/', [App\Http\Controllers\ShopStoreController::class, 'paginaPrincip
 //Pagina checkout
 Route::get('/checkout', [App\Http\Controllers\VentaController::class, 'paginaCheckout'] )->name('shop.checkout');
 //Contra entrega
-Route::post('/checkout/upondelivery',[App\Http\Controllers\VentaController::class, 'PayUponDelivery'] )->name("shop.checkout.upondelivery");
+Route::post('/checkout/upondelivery',[App\Http\Controllers\UponDelivery::class, 'PayUponDelivery'] )->name("shop.checkout.upondelivery");
 //Paypal
-Route::get('/checkout/paypal',[App\Http\Controllers\VentaController::class, 'paypal'])->name("shop.checkout.paypal");
+Route::get('/checkout/paypal',[App\Http\Controllers\PaypalController::class, 'paypal'])->name("shop.checkout.paypal");
 //Paypal-status
-Route::get('/checkout/paypal/status',[App\Http\Controllers\VentaController::class, 'paypalStatus'])->name("shop.checkout.status");
+Route::get('/checkout/paypal/status',[App\Http\Controllers\PaypalController::class, 'paypalStatus'])->name("shop.checkout.status");
 
 /* Carrito compra */
 //Pagina carrito de compra
