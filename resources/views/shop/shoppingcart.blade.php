@@ -9,7 +9,7 @@
                 </button>
             </div>
         @endif
-        <div :key="componentKey" class="row">
+        <div :key="componentKey" class="d-none row" v-bind:class="[init==1 ? 'container d-block' : 'container d-none']">
             
             <div v-if="cant" class="row">
                 <div class="col-lg-8">

@@ -19354,7 +19354,6 @@ var vm = new Vue({
       vm.cant = response.data[1];
       vm.categoria = 'Todos';
       vm.init = 1;
-      console.log(response);
     });
   },
   methods: {

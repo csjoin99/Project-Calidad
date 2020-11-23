@@ -16,7 +16,6 @@ body {
     height: 100vh;
     margin: 0px;
     background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../images/fondo-header.jpg");
-    background-image: url("../images/fondo-header.jpg");
     background-attachment: fixed;
     background-position: center center;
     background-size: cover;
@@ -52,66 +51,6 @@ nav img {
 
 .nav-bar i {
     color: #BEBDBF;
-    height: 100px;
-    min-height: 80px;
-    width: 100vw;
-    margin: 0px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 50px;
-}
-
-nav img {
-    height: 40px;
-}
-
-.nav-options {
-    list-style: none;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    padding: 0px;
-}
-
-.nav-options li {
-    font-size: 17px;
-    width: 120px;
-    text-align: center;
-}
-
-.nav-options li a {
-    color: #BEBDBF;
-    transition: 0.3s;
-}
-
-.nav-options li a:hover {
-    color: #ffffff;
-    text-decoration: none;
-}
-
-.nav-login {
-    list-style: none;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    padding: 0px;
-}
-
-.nav-login li {
-    font-size: 17px;
-    width: 120px;
-    text-align: center;
-}
-
-.nav-login li a {
-    color: #BEBDBF;
-    transition: 0.3s;
-}
-
-.nav-login li a:hover {
-    color: #ffffff;
-    text-decoration: none;
 }
 
 .nav-title {

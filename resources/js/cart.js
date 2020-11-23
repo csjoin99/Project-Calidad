@@ -19,6 +19,7 @@ const vm = new Vue({
                 photoArticulo: ""
             },
             componentKey: 0,
+            init: ''
         };
     },
     created() {
@@ -26,7 +27,7 @@ const vm = new Vue({
             this.items = response.data[0]
             this.cant = response.data[2]
             this.totalcart = response.data[1]
-            this.componentKey += 1
+            vm.init = 1
         })
     },
     methods: {

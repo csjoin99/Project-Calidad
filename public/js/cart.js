@@ -19354,7 +19354,8 @@ var vm = new Vue({
         categoriaArticulo: "",
         photoArticulo: ""
       },
-      componentKey: 0
+      componentKey: 0,
+      init: ''
     };
   },
   created: function created() {
@@ -19364,7 +19365,7 @@ var vm = new Vue({
       _this.items = response.data[0];
       _this.cant = response.data[2];
       _this.totalcart = response.data[1];
-      _this.componentKey += 1;
+      vm.init = 1;
     });
   },
   methods: {
