@@ -11,10 +11,7 @@ class Shoppingcart extends Controller
     //
     public function paginaShoppingCart()
     {
-        $recomendaciones = DB::select('select * from (SELECT *,(select COUNT(*) from articulo_tallas where 
-        articulo_tallas.idArticuloS=articulos.idArticulo and articulo_tallas.estadoArticuloTalla!=0) 
-        as cant from articulos where articulos.estadoArticulo!=0 order by articulos.idArticulo ASC) 
-        as b where b.cant !=0 ORDER BY RAND() LIMIT 4');
+        $recomendaciones = DB::select('SELECT * FROM recomendaciones');
         return view('shop.shoppingcart')->with([
             'Titulo' => 'Carrito de compra',
             'moreproducts' => $recomendaciones

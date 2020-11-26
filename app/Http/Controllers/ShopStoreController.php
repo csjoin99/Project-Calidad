@@ -47,10 +47,7 @@ class ShopStoreController extends Controller
         `articulo_tallas`.`idTallaS`, `articulo_tallas`.`stockArticulo`, `tallas`.`nombreTalla`
         FROM `articulo_tallas` LEFT JOIN `tallas` ON `articulo_tallas`.`idTallaS` = `tallas`.`idTalla`
         WHERE articulo_tallas.estadoArticuloTalla!=0 and `articulo_tallas`.`idArticuloS`=?", [$product[0]->idArticulo]);
-        $recomendaciones = DB::select('select * from (SELECT *,(select COUNT(*) from articulo_tallas where 
-        articulo_tallas.idArticuloS=articulos.idArticulo and articulo_tallas.estadoArticuloTalla!=0) 
-        as cant from articulos where articulos.estadoArticulo!=0 order by articulos.idArticulo ASC) 
-        as b where b.cant !=0 ORDER BY RAND() LIMIT 4');
+        $recomendaciones = DB::select('SELECT * FROM recomendaciones');
         $message_stock = 'El articulo seleccionado no cuenta con stock';
         foreach ($tallas_producto as $item) {
             if ($item->stockArticulo > 0) {
