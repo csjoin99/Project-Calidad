@@ -4,21 +4,8 @@ namespace App\Http\Controllers;
 
 use Error;
 use Gloudemans\Shoppingcart\Facades\Cart;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
-use PayPal\Api\Amount;
-use PayPal\Api\ItemList;
-use PayPal\Api\Payer;
-use PayPal\Api\Payment;
-use PayPal\Api\PaymentExecution;
-use PayPal\Api\RedirectUrls;
-use PayPal\Api\ShippingAddress;
-use PayPal\Api\Transaction;
-use PayPal\Auth\OAuthTokenCredential;
-use PayPal\Exception\PayPalConnectionException;
-use PayPal\Rest\ApiContext;
 
 class VentaController extends Controller
 {
@@ -98,11 +85,6 @@ class VentaController extends Controller
                     'precioVentaD' => $item->price
                 ]
             );
-            $currentcant = DB::table('articulo_tallas')->where('idArticuloTalla', $item->id)->value('stockArticulo');
-            $newcant = $currentcant - $item->qty;
-            DB::table('articulo_tallas')->where('idArticuloTalla', $item->id)->update([
-                'stockArticulo' => $newcant
-            ]);
         }
     }
 }

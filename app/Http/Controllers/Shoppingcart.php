@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\articulo;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

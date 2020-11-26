@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\articulo;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -84,7 +83,7 @@ class ArticuloController extends Controller
                     ]);
             }
             if ($request->photoArticulo) {
-                $this->destroyPhoto($id);
+                $this->deletePhoto($id);
                 $photo_name = $this->uploadPhoto($id, $request->photoArticulo);
                 DB::table('articulos')
                     ->where('idArticulo', $id)
@@ -101,7 +100,7 @@ class ArticuloController extends Controller
     {
         try {
             if ($request->photoArticulo) {
-                $this->destroyPhoto($id);
+                $this->deletePhoto($id);
                 $photo_name = $this->uploadPhoto($id, $request->photoArticulo);
                 DB::table('articulos')
                     ->where('idArticulo', $id)
@@ -130,7 +129,7 @@ class ArticuloController extends Controller
     public function destroyArticulos($id)
     {
         try {
-            $this->destroyPhoto($id);
+            $this->deletePhoto($id);
             DB::table('articulos')
                 ->where('idArticulo', $id)
                 ->update([
@@ -151,7 +150,7 @@ class ArticuloController extends Controller
         file_put_contents($path, $decoded);
         return $nombre_photo;
     }
-    private function destroyPhoto($id)
+    private function deletePhoto($id)
     {
         if ($check_photo_articulo = DB::table('articulos')->where('idArticulo', $id)->value('photoArticulo')) {
             $imgpath = public_path() . '/store/' . $check_photo_articulo;

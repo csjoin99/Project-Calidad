@@ -12,12 +12,12 @@ class ShopStoreController extends Controller
         return view('shop.main')->with('Titulo', 'Bienvenido a Clothing and More');
     }
 
-    public function showListProducts($genero)
+    public function paginaProductos($genero)
     {
         return view('shop.products')->with(['Titulo' => 'Artículos ' . $genero, 'genderTitulo' => 'Todos', 'genero' => $genero]);
     }
 
-    public function FiltroProducts($genero, Request $request)
+    public function filtroProductos($genero, Request $request)
     {
         if ($genero == 'mujeres' || $genero == 'hombres') {
             $generoArticulo = $genero == 'mujeres' ? 2 : 1;
@@ -40,7 +40,7 @@ class ShopStoreController extends Controller
         }
         return redirect()->route('main');
     }
-    public function showInfoProduct($nombreproducto)
+    public function informacionProducto($nombreproducto)
     {
         $product = DB::table('articulos')->where('nombreArticulo', '=', $nombreproducto)->get();
         $tallas_producto = DB::select("SELECT `articulo_tallas`.`idArticuloTalla`, `articulo_tallas`.`idArticuloS`, 

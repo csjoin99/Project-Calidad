@@ -2,13 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\admin;
-use App\Models\articulo;
-use App\Models\articulo_talla;
-use App\Models\detalle_venta;
 use App\Models\User;
 use App\Models\venta;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
