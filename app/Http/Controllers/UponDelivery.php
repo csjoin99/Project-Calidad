@@ -40,7 +40,7 @@ class UponDelivery extends Controller
                 'direccionVenta' => $request->direccion,
                 'distritoVenta' => $request->distrito
             ]);
-            app(VentaController::class)->updateStockArticulos($ventaid);
+            app(VentaController::class)->insertDetalleVentas($ventaid);
             $pdfdoc = app(PDFgenerator::class)->index($clienteid, $ventaid);
             Cart::destroy();
             $correo = $user->email;
