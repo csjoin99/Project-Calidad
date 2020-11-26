@@ -51,7 +51,7 @@ Route::post('/admin/articulostalla/edit', [App\Http\Controllers\ArticuloTallaCon
 Route::post('/admin/articulostalla/destroy/{id}', [App\Http\Controllers\ArticuloTallaController::class, 'destroyArticuloTalla'] )->name('admin.articulotalla.destroy');
 
 /* Pagina principal */
-Route::get('/', [App\Http\Controllers\ShopStoreController::class, 'paginaPrincipal'])->name('main');
+Route::get('/', [App\Http\Controllers\ShopStoreController::class, 'PaginaPrincipal'])->name('main');
 
 /* Checkout */
 //Pagina checkout
@@ -77,8 +77,8 @@ Route::patch('/cart/{product}', [App\Http\Controllers\Shoppingcart::class, 'actu
 
 /* Productos compra */
 //Producto info
-Route::get('/product/{product}', [App\Http\Controllers\ShopStoreController::class, 'showInfoProduct'] )->name('shop.product');
+Route::get('/product/{product}', [App\Http\Controllers\ShopStoreController::class, 'InformacionProducto'] )->name('shop.product');
 //Productos lista
-Route::get('/products/{gender}', [App\Http\Controllers\ShopStoreController::class, 'showListProducts'] )->name('shop.products');
+Route::get('/products/{gender}', [App\Http\Controllers\ShopStoreController::class, 'PaginaProductos'] )->name('shop.products');
 //Productos filtro 
-Route::get('/productsget/{gender}', [App\Http\Controllers\ShopStoreController::class, 'FiltroProducts'] )->name('shop.products.filter');
+Route::get('/productsget/{gender}', [App\Http\Controllers\ShopStoreController::class, 'FiltroProductos'] )->name('shop.products.filter');
