@@ -26,8 +26,8 @@ class ArticuloController extends Controller
             }
         }
         $cantidad_articulos = count($articulos);
-        $page = ($request->page) ? $request->page : 1;
         $per_page = 5;
+        $page = ($request->page) ? $request->page : 1;
         $offset = ($page * $per_page) - $per_page;
         $paginate = new LengthAwarePaginator(
             array_slice($articulos->toArray(), $offset, $per_page, true),
@@ -38,6 +38,7 @@ class ArticuloController extends Controller
         return [
             'pagination' => $paginate,
             'length' => $cantidad_articulos,
+            'test' => $paginate->currentPage()
         ];
     }
     public function insertArticulos(Request $request)

@@ -19392,6 +19392,10 @@ var vm = new Vue({
   methods: {
     obtener: function obtener(page) {
       Axios.get("/admin/articulos/get?page=".concat(page)).then(function (response) {
+        if (page > response.data.pagination.last_page && page != 1) {
+          vm.obtener(page - 1);
+        }
+
         vm.cant = response.data.length;
         vm.pagination = response.data.pagination;
         vm.articulos = vm.pagination.data;
