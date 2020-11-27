@@ -130,7 +130,7 @@ class PaypalController extends Controller
                 'direccionVenta' => $address,
                 'distritoVenta' => $city
             ]);
-            app(VentaController::class)->insertDetalleVentas($ventaid);
+            app(DetalleVentaController::class)->insertDetalleVentas($ventaid);
             $pdfdoc = app(PDFgenerator::class)->index($clienteid, $ventaid);
             Cart::destroy();
             app(Mailer::class)->index($pdfdoc, $fullname, $accountmail);

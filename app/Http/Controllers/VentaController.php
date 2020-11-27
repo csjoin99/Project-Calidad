@@ -74,17 +74,5 @@ class VentaController extends Controller
         }
         return true;
     }
-    public function insertDetalleVentas($ventaid)
-    {
-        foreach (Cart::content() as $item) {
-            DB::table('detalle_ventas')->insert(
-                [
-                    'idVentaD' => $ventaid,
-                    'idArticuloTallaD' => $item->id,
-                    'cantidad' => $item->qty,
-                    'precioVentaD' => $item->price
-                ]
-            );
-        }
-    }
+    
 }

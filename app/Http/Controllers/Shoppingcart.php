@@ -11,7 +11,7 @@ class Shoppingcart extends Controller
     //
     public function paginaShoppingCart()
     {
-        $recomendaciones = DB::select('SELECT * FROM recomendaciones');
+        $recomendaciones = DB::select('SELECT * FROM vista_recomendaciones');
         return view('shop.shoppingcart')->with([
             'Titulo' => 'Carrito de compra',
             'moreproducts' => $recomendaciones

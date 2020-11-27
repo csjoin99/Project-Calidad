@@ -18,12 +18,9 @@ class ArticuloTallaController extends Controller
     }
     public function listaArticuloTalla(Request $request)
     {
-        $articulos = DB::select("SELECT articulos.idArticulo, articulos.estadoArticulo, articulos.nombreArticulo, articulos.categoriaArticulo,(select COUNT(*) from articulo_tallas where articulo_tallas.idArticuloS=articulos.idArticulo and articulo_tallas.estadoArticuloTalla!=0) 
-        as cant from articulos where articulos.estadoArticulo!=0  order by articulos.idArticulo ASC");
+        $articulos = DB::select("SELECT * FROM vista_articulos_cant_tallas");
         $articulos_cant = count($articulos);
-        $articulo_tallas = DB::select("SELECT `articulo_tallas`.`idArticuloTalla`, `articulo_tallas`.`idArticuloS`, `articulo_tallas`.`idTallaS`, `articulo_tallas`.`stockArticulo`, `tallas`.`nombreTalla`
-        FROM `articulo_tallas` LEFT JOIN `tallas` ON `articulo_tallas`.`idTallaS` = `tallas`.`idTalla` where 
-        `articulo_tallas`.`estadoArticuloTalla`!=0");
+        $articulo_tallas = DB::select("SELECT * FROM vista_tallas_articulos");
         for ($i = 0; $i < $articulos_cant; $i++) {
             $array_tallas = array();
             for ($j = 0; $j < count($articulo_tallas); $j++) {
