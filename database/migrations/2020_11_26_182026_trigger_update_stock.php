@@ -31,6 +31,6 @@ class TriggerUpdateStock extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('TriggerUpdateStock');
     }
 }
